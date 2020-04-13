@@ -1,0 +1,13 @@
+Glory mod is a work in progress mod, it's aiming to replace every single terraria boss with a reduxed version, new sprite, new name, new mechanics and significantly harder than its vanilla cousin.
+
+Current replaced bosses:
+- King Slime ( no, rope cheese no longer works. )
+
+Additionally, the mod adds in a few new items, currently; it has:
+- 1 material
+- 2 accessories
+- 3 total items
+
+This mod is not for the lighthearted, and to prove that; i have removed the ability to play on normal mode while this mod is active, so don't enter a normal mode world with a hardcore character or anything.
+
+If you have anything to suggest, you can send feedback in the homepage of this mod, that being the mod's discord server!

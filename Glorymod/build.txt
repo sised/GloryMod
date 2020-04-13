@@ -1,0 +1,4 @@
+author = sised
+version = 0.1
+displayName = Glory Mod
+homepage = https://discord.gg/T2sbrU7
