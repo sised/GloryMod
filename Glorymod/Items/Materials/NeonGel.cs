@@ -7,19 +7,19 @@ using Terraria.DataStructures;
 
 namespace Glorymod.Items.Materials
 {
-    public class EssenceOfGlory : ModItem
+    public class NeonGel : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Essence of Glory");
-            Tooltip.SetDefault("Contains a small amount of glory earned upon battle, \nUsed to crat most of Glorymod's items, stacks up to 9999.");            Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(5, 5));
+            DisplayName.SetDefault("Neon Gel");
+            Tooltip.SetDefault("Looks unbelievably cool");
         }
         public override void SetDefaults()
         {
             item.width = 14;
             item.height = 24;
-            item.maxStack = 9999;
-            item.value = 0;
+            item.maxStack = 999;
+            item.value = 27;
             item.rare = 0;
         }
 
