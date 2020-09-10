@@ -7,12 +7,12 @@ using Terraria.DataStructures;
 using static Terraria.ModLoader.ModContent;
 namespace Glorymod.Items.Accessories.PreHm
 {
-    public class Aerogel : ModItem
+    public class SandstoneMedallion : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Aerogel");
-            Tooltip.SetDefault("Boosts jump speed and slightly reduces fall speed\n'World's lightest solid!'");
+            DisplayName.SetDefault("Sandstone Medallion");
+            Tooltip.SetDefault("Increases minion slots by 1 and minion damage by 10%\nBut also increases enemy contact damage by 20%");
         }
         public override void SetDefaults()
         {
@@ -24,17 +24,17 @@ namespace Glorymod.Items.Accessories.PreHm
         }
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.jumpSpeedBoost += 2f;
-            player.maxFallSpeed -= 0.6f;
-           
+            player.maxMinions += 1;
+            player.minionDamage *= 1.1f;
+
         }
         public override void AddRecipes()
         {
             ModRecipe recipe = new ModRecipe(mod);
             // ItemType<ExampleItem>() is how to get the ExampleItem item, 10 is the amount of that item you need to craft the recipe
-            recipe.AddIngredient(ItemID.Gel, 20);
-            recipe.AddIngredient(ItemID.Feather, 3);
-            recipe.AddIngredient(mod.ItemType("EssenceOfGlory"), 15);
+            recipe.AddIngredient(ItemID.Sandstone, 20);
+            recipe.AddIngredient(ItemID.FossilOre, 3);
+            recipe.AddIngredient(mod.ItemType("EssenceOfGlory"), 20);
             recipe.AddTile(TileID.Anvils);
             recipe.SetResult(this);
             recipe.AddRecipe();
