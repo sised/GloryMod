@@ -1,13 +1,24 @@
-Glory mod is a work in progress mod, it's aiming to replace every single terraria boss with a reduxed version, new sprite, new name, new mechanics and significantly harder than its vanilla cousin.
+Glory mod adds a new difficulty mode, Menace mode, which can be activated through config.
+Changing the config will force a reload, going out of your way not to reload will cause the game to not function properly.
+Menace mode makes the game SUPER MEGA hard, not kidding, its really hard
+bosses  have new sprites, names, COMPLETELY new mechanics and uuh
 
-Current replaced bosses:
-- King Slime ( no, rope cheese no longer works. )
+There's also a few new items, like, weapons, accessories materials and stuff
+so that's cool
 
-Additionally, the mod adds in a few new items, currently; it has:
-- 1 material
-- 2 accessories
-- 3 total items
+Menace bosses which are done so far:
+King slime
+Eye of cthulhu
+Eater of Worlds
+Brain of Cthulhu
+Queen Bee
+Skeletron
+Wall of Flesh
+Destroyer
 
-This mod is not for the lighthearted, and to prove that; i have removed the ability to play on normal mode while this mod is active, so don't enter a normal mode world with a hardcore character or anything.
+The rest will be added in future versions
 
-If you have anything to suggest, you can send feedback in the homepage of this mod, that being the mod's discord server!
+oh and also
+it only works in expert mode.
+
+k, that's all i think, have fun

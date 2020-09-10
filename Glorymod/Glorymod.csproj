@@ -5,21 +5,12 @@
     <AssemblyName>Glorymod</AssemblyName>
     <TargetFramework>net45</TargetFramework>
     <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <Target Name="BuildMod" AfterTargets="Build">
-    <Exec Command="&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define $(DefineConstants) -unsafe $(AllowUnsafeBlocks)" />
+    <Exec Command="&quot;$(tMLBuildServerPath)&quot; -build $(ProjectDir) -eac $(TargetPath) -define &quot;$(DefineConstants)&quot; -unsafe $(AllowUnsafeBlocks)" />
   </Target>
   <ItemGroup>
-    <None Remove="NPCs\NeonSlime.png" />
-    <None Remove="NPCs\NeonTyrant.gif" />
-    <None Remove="NPCs\NeonTyrant.png" />
-    <None Remove="NPCs\NeonTyrant10.png" />
-    <None Remove="NPCs\NeonTyrant11.png" />
-    <None Remove="NPCs\NeonTyrant6.png" />
-    <None Remove="NPCs\NeonTyrant7.png" />
-    <None Remove="NPCs\NeonTyrant8.png" />
-    <None Remove="NPCs\NeonTyrant9.png" />
-    <None Remove="Projectiles\NeonVortex.png" />
+    <PackageReference Include="tModLoader.CodeAssist" Version="0.1.*" />
   </ItemGroup>
 </Project>

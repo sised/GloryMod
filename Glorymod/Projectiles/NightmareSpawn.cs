@@ -74,12 +74,20 @@ namespace Glorymod.Projectiles
                     distanceFromTarget = between;
                     targetCenter = npc.Center;
                     foundTarget = true;
+                    if (timer > 50)
+                    {
+                        Vector2 noscope = npc.Center - projectile.Center;
+                        noscope.Normalize();
+                        Projectile.NewProjectile(projectile.Center.X, projectile.Center.Y, noscope.X * 10f, noscope.Y * 10f, ModContent.ProjectileType<NightmareProjectile>(), projectile.damage, 5, Main.myPlayer);
+                        timer = 0;
+                    }
                 }
             }
             if (timer < 500)
             {
                 timer++;
             }
+            
             if (!foundTarget)
             {
                 for (int i = 0; i < Main.maxNPCs; i++)
