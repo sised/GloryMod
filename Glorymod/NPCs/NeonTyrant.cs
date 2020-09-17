@@ -57,52 +57,44 @@ namespace Glorymod.NPCs
             player.AddBuff(BuffID.WitheredWeapon, 300, true);
             player.AddBuff(BuffID.WitheredArmor, 300, true);
         }
-        
+
         public override void FindFrame(int frameHeight)
         {
-            if(timer2 > 28)
+            if (timer2 > 28)
             {
                 timer2 = 0; //it will reset regardless if the npc is on the ground or not
             }
-            if(npc.velocity.Y == 0) //if its 0 that means its not airborne
+            if (npc.velocity.Y == 0) //if its 0 that means its not airborne
             {
                 timer2++;
-                if (timer2 > 8)
+                if (++timer2 % 8 == 0)
                 {
-                    npc.frame.Y = 0;
-                }
-                if (timer2 > 16)
-                {
-                    npc.frame.Y = frameHeight * 1;
-                    
-                }
-                if (timer2 > 22)
-                {
-                    npc.frame.Y = frameHeight * 2;
-                    
-                }
-                if (timer2 > 28)
-                {
-                    npc.frame.Y = frameHeight * 3;
-                    
+                    npc.frame.Y += frameHeight;
+                    if (npc.frame.Y >= frameHeight * Main.npcFrameCount[npc.type]) npc.frame.Y = 0;
                 }
             }
-            else
-            {
-                npc.frame.Y = frameHeight * 3;
-            }
-            
         }
-        
+        bool Increasing = true;
         public override void AI()
         {
-            if(dead)
+            if (dead)
             {
-                npc.velocity = Vector2.Zero;
+                npc.velocity.X = 0;
+                npc.velocity.Y += .1f;
                 npc.life = 10000;
                 npc.dontTakeDamage = true;
                 npc.scale -= 0.005f;
-                if(npc.scale < 0.5f)
+
+                if(Increasing) {
+                    npc.rotation += 0.05f;
+                    if (npc.rotation >= 0.5f) Increasing = false;
+                }
+                else  {
+                    npc.rotation -= 0.05f;                    
+                    if (npc.rotation <= -0.5) Increasing = true;                    
+                }
+                Dust.NewDust(npc.position, npc.width, npc.height, 174, Main.rand.Next(-4, 4), 0, 0, Color.Red, 1.3f);
+                if (npc.scale < 0.5f)
                 {
                     AIdead = true;
                     npc.dontTakeDamage = true;
@@ -110,7 +102,7 @@ namespace Glorymod.NPCs
                     npc.checkDead();
                 }
             }
-            if(!dead)
+            if (!dead)
             {
                 npc.scale = 0.8f + (1 - npc.life * 0.0003f);
                 if (Main.player.Count(p => p.active && !p.dead) == 0)
@@ -157,16 +149,6 @@ namespace Glorymod.NPCs
                 {
                     npc.active = false;
                     Main.NewText("This ain't menace mode, neon tyrant is outta here.", 0, 221, 114);
-                }
-                timerAbove++;
-                if (Main.player[npc.target].Center.Y <= npc.Center.Y)
-                {
-                    timerAbove = 0;
-                    npc.noTileCollide = false;
-                }
-                else if (timerAbove > 250)
-                {
-                    npc.noTileCollide = true;
                 }
 
                 if (subphase == 2)
@@ -259,7 +241,6 @@ namespace Glorymod.NPCs
 
                     if (!alreadyExploded)
                     {
-                        npc.noTileCollide = true;
                         npc.position.Y = Main.player[npc.target].Center.Y - 600f;
                         npc.position.X = Main.player[npc.target].Center.X - npc.width * 0.5f;
                         npc.velocity.X = 0;
@@ -322,13 +303,14 @@ namespace Glorymod.NPCs
                     }
                 }
             }
-            
+
         }
         public override bool CheckDead()
         {
             if (dead && AIdead)
             {
                 NPC.downedSlimeKing = true;
+                Lighting.AddLight(npc.Center, new Vector3(245, 0, 10));
                 for (int i = 0; i < 12; i++)
                 {
                     Dust dust;
@@ -338,17 +320,11 @@ namespace Glorymod.NPCs
                 {
                     Vector2 a = new Vector2(npc.Center.X + Main.rand.Next(20) - Main.rand.Next(20), npc.Center.Y + Main.rand.Next(20) - Main.rand.Next(20));
                     Vector2 b = new Vector2(Main.rand.Next(3), Main.rand.Next(3));
-                    if (i == 0)
+                    switch (i)
                     {
-                        Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/NeonGore"), 1f);
-                    }
-                    if (i == 1)
-                    {
-                        Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/NeonGore"), 1f);
-                    }
-                    if (i == 2)
-                    {
-                        Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/NeonGore"), 1f);
+                        case 1: Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/NeonGore"), 1f); break;
+                        case 2: Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/NeonGore"), 1f); break;
+                        case 3: Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/NeonGore"), 1f); break;
                     }
                     NPC.NewNPC((int)a.X, (int)a.Y, ModContent.NPCType<NeonSlime>());
                 }

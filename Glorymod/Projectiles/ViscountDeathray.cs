@@ -128,7 +128,7 @@ namespace Glorymod.Projectiles
 				warning++;
 				if (warning > 120)
 				{
-					if (projectile.hostile == false && !Fade)
+					if (projectile.hostile == false && !Fade && projectile.ai[1] == 0)
 					{
 						Main.PlaySound(SoundID.Item, (int)projectile.Center.X, (int)projectile.Center.Y, 122);
 					}

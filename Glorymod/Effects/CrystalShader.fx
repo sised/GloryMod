@@ -12,7 +12,6 @@ float uDirection;
 float3 uLightSource; // Used for reflective dyes.
 float2 uImageSize0;
 float2 uImageSize1;
-
 float4 ArmorTint(float4 sampleColor : COLOR0, float2 coords : TEXCOORD0) : COLOR0
 {
     float4 colour = tex2D(uImage0, coords);

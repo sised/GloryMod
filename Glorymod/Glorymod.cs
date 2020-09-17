@@ -128,6 +128,11 @@ namespace Glorymod
                 Main.instance.LoadGore(135);
                 Main.goreTexture[135] = GetTexture("NPCs/WormFixer");
 
+                Main.instance.LoadGore(54);
+                Main.goreTexture[54] = GetTexture("NPCs/WormFixer");
+                Main.instance.LoadGore(55);
+                Main.goreTexture[55] = GetTexture("NPCs/WormFixer");
+
                 Main.instance.LoadGore(137);
                 Main.goreTexture[137] = GetTexture("Gores/WoFgore2");
 
@@ -155,6 +160,7 @@ namespace Glorymod
             {
                 if (ModContent.GetInstance<GloriousConfig>().MenaceMode)
                 {
+                    
                     Main.npcHeadBossTexture[22] = GetTexture("Terraria/NPC_Head_Boss_22");
                     Main.instance.LoadNPC(NPCID.WallofFlesh);
                     Main.npcTexture[NPCID.WallofFlesh] = GetTexture("Terraria/NPC_113");

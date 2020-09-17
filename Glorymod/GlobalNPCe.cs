@@ -4,52 +4,42 @@ using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 using Glorymod.NPCs;
 using Glorymod.Projectiles;
-using System;
 using Glorymod.Buffs;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
-using IL.Terraria.DataStructures;
-using Terraria.DataStructures;
-using Terraria.GameInput;
-using Terraria.ModLoader.IO;
-using Glorymod;
-using Terraria.GameContent.Dyes;
-using Terraria.GameContent.UI;
-using Terraria.Graphics.Effects;
-using Terraria.Graphics.Shaders;
-using Terraria.UI;
 using Glorymod.Items.Accessories.Hm;
 using System.Collections.Generic;
-using System.Deployment.Internal;
-using System.Threading;
-using Ionic.Zip;
+using Glorymod.Dusts;
+using Glorymod.Items.Weapons.Ranged;
 
 namespace Glorymod
 {
-    
+
     public class GlobalNPCe : GlobalNPC
     {
         public static bool deadp;
         public override bool InstancePerEntity => true;
         public float BlazingRadious = 1500;
         bool Enter = true;
-        public float PhaseChange;
+        public float PhaseChange = 0;
         Vector2 Prediction;
         public bool LaserAttached = false;
         public bool FixerAttached = false;
         public float targetX = 0;
-        public int PhaseChange2;
+        public int PhaseChange2 = 0;
         public float targetY = 0;
         public int HP;
         public bool Phase2 = false;
-
         bool Exist = false;
-        int Ypos = -300;
         public override void NPCLoot(NPC npc)
         {
-            if(npc.type == NPCID.WallofFlesh)
+            if (npc.type == NPCID.WallofFlesh && Mworld.Menace)
             {
                 Item.NewItem(npc.Center, ModContent.ItemType<TrophyOfMenace>());
+            }
+            if (npc.type == NPCID.SkeletronHead && Mworld.Menace)
+            {
+                Item.NewItem(npc.Center, ModContent.ItemType<DemonSemen>());
             }
         }
         public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
@@ -77,7 +67,7 @@ namespace Glorymod
 
                     break;
                 }
-                
+
 
 
             }
@@ -88,9 +78,9 @@ namespace Glorymod
         }
         public override void SetDefaults(NPC npc)
         {
-            if(Mworld.Menace)
+            if (Mworld.Menace)
             {
-                if(npc.type == NPCID.WallofFlesh)
+                if (npc.type == NPCID.WallofFlesh)
                 {
                     npc.HitSound = SoundID.NPCHit2;
                     npc.GivenName = "Basalt Barricade";
@@ -98,18 +88,18 @@ namespace Glorymod
                     npc.defense = 15;
                 }
 
-                if(npc.type == NPCID.SkeletronHead)
+                if (npc.type == NPCID.SkeletronHead)
                 {
                     npc.GivenName = "Fiend Viscount";
                     npc.aiStyle = -1;
                 }
             }
-            
+
         }
-        
+
         public override void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
         {
-            if(npc.active)
+            if (npc.active)
             {
                 if (npc.type == 4)
                 {
@@ -120,15 +110,16 @@ namespace Glorymod
                     target.AddBuff(BuffID.OnFire, 200);
                 }
             }
-            
+
         }
+        public int o;
         public override void AI(NPC npc)
         {
 
-            
+
             if (npc.active)
             {
-                
+
 
 
                 #region Special Effects
@@ -195,7 +186,7 @@ namespace Glorymod
                 #endregion
                 #region Basalt Barricade
                 // Mouth
-                
+
                 if (Mworld.Menace && npc.type == NPCID.WallofFlesh)
                 {
                     npc.velocity.X = MathHelper.Clamp(npc.velocity.X, -5f, +5f);
@@ -216,22 +207,22 @@ namespace Glorymod
                         BlazingRadious -= 5;
                     }
 
-                    if(!Enter)
+                    if (!Enter)
                     {
-                        if(PhaseChange < 300)
+                        if (PhaseChange < 300)
                         {
                             BlazingRadious = 250;
                         }
-                        if(PhaseChange > 300 && PhaseChange < 351)
+                        if (PhaseChange > 300 && PhaseChange < 351)
                         {
                             BlazingRadious += 15;
                         }
-                        if(PhaseChange == 351)
+                        if (PhaseChange == 351)
                         {
                             Projectile.NewProjectile(npc.Center, npc.velocity, ModContent.ProjectileType<MoltenDeathray>(), 40, 1);
-                            
+
                         }
-                        if(PhaseChange == 471)
+                        if (PhaseChange == 471)
                         {
                             for (int i = 0; i < 30; i++)
                             {
@@ -247,9 +238,9 @@ namespace Glorymod
                                 }
                             }
                         }
-                        if(PhaseChange > 350 && PhaseChange < 700)
+                        if (PhaseChange > 350 && PhaseChange < 700)
                         {
-                            if(npc.velocity.X > 0)
+                            if (npc.velocity.X > 0)
                             {
                                 npc.rotation = npc.velocity.ToRotation();
                             }
@@ -258,15 +249,15 @@ namespace Glorymod
                                 npc.rotation = npc.velocity.RotatedBy(MathHelper.PiOver2 * 2).ToRotation();
                             }
                         }
-                        if(PhaseChange > 700 && PhaseChange < 751)
+                        if (PhaseChange > 700 && PhaseChange < 751)
                         {
                             BlazingRadious += 10;
                         }
-                        if(PhaseChange == 751)
+                        if (PhaseChange == 751)
                         {
                             Main.PlaySound(29, (int)npc.Center.X, (int)npc.Center.Y, 105);
                         }
-                        if(PhaseChange == 800)
+                        if (PhaseChange == 800)
                         {
                             Main.PlaySound(15, (int)npc.Center.X, (int)npc.Center.Y, 0);
                             if (npc.velocity.X > 0)
@@ -278,9 +269,9 @@ namespace Glorymod
                                 npc.velocity.X = -33;
                             }
                         }
-                        if(PhaseChange > 800 && PhaseChange < 900)
+                        if (PhaseChange > 800 && PhaseChange < 900)
                         {
-                            if(npc.velocity.X > 0)
+                            if (npc.velocity.X > 0)
                             {
                                 npc.velocity.X = 33 - ((PhaseChange - 800) * 0.33f);
                             }
@@ -289,17 +280,17 @@ namespace Glorymod
                                 npc.velocity.X = -33 + ((PhaseChange - 800) * 0.33f);
                             }
                         }
-                        if(PhaseChange > 900 && PhaseChange < 951)
+                        if (PhaseChange > 900 && PhaseChange < 951)
                         {
                             BlazingRadious -= 10;
                         }
-                        if(PhaseChange == 951 || PhaseChange == 1000 || PhaseChange == 1050 || PhaseChange == 1100 || PhaseChange == 1150)
+                        if (PhaseChange == 951 || PhaseChange == 1000 || PhaseChange == 1050 || PhaseChange == 1100 || PhaseChange == 1150)
                         {
-                            
-                            if(npc.velocity.X > 0)
+
+                            if (npc.velocity.X > 0)
                             {
                                 Main.NewText("a");
-                                if(Main.player[npc.target].velocity.X > 0)
+                                if (Main.player[npc.target].velocity.X > 0)
                                 {
                                     Prediction = (Main.player[npc.target].Center - npc.Center).RotatedBy(MathHelper.ToRadians(-Main.player[npc.target].velocity.X + Main.player[npc.target].velocity.Y));
                                 }
@@ -321,9 +312,9 @@ namespace Glorymod
                             }
                             Projectile.NewProjectile(npc.Center, Prediction, ModContent.ProjectileType<LavaBlob>(), 20, 0);
                         }
-                        if(PhaseChange > 1199)
+                        if (PhaseChange > 1199)
                         {
-                            if(PhaseChange % 10 == 0 && npc.life < npc.lifeMax / 4 && npc.velocity.X > 0)
+                            if (PhaseChange % 10 == 0 && npc.life < npc.lifeMax / 4 && npc.velocity.X > 0)
                             {
                                 Main.PlaySound(SoundID.Item33, (int)npc.Center.X, (int)npc.Center.Y);
                                 Vector2 a = new Vector2(0, 5).RotatedBy(MathHelper.ToRadians(PhaseChange - 1200 * 2)) * 3;
@@ -337,7 +328,7 @@ namespace Glorymod
                             }
                             BlazingRadious -= 7.5f;
                         }
-                        if(PhaseChange == 1300)
+                        if (PhaseChange == 1300)
                         {
                             PhaseChange = 0;
                         }
@@ -346,23 +337,23 @@ namespace Glorymod
                     {
 
                         Dust dust;
-                        
+
                         // You need to set position depending on what you are doing. You may need to subtract width/2 and height/2 as well to center the spawn rectangle.
                         Vector2 position = npc.Center + new Vector2(BlazingRadious, 0).RotatedBy(MathHelper.ToDegrees(i));
                         int r = Main.rand.Next(3);
-                        if(r == 2)
+                        if (r == 2)
                         {
-                            dust = Main.dust[Terraria.Dust.NewDust(position, 0, 0, 6, 0 ,0, 0, new Color(255, 255, 255), 1f)];
+                            dust = Main.dust[Terraria.Dust.NewDust(position, 0, 0, 6, 0, 0, 0, new Color(255, 255, 255), 1f)];
                             dust.noGravity = true;
                         }
-                        
+
 
                     }
                 }
                 // Wall of Flesh stuff despawns
                 BasaltBarricadeUnneededNPCDespawn(npc);
                 // Hungry Despawn
-                if(Mworld.Menace && npc.type == NPCID.TheHungry) { npc.active = false; }
+                if (Mworld.Menace && npc.type == NPCID.TheHungry) { npc.active = false; }
 
 
                 if (npc.type == ModContent.NPCType<EoW>())
@@ -372,18 +363,24 @@ namespace Glorymod
                 #region Fiend Viscount
                 if (Mworld.Menace && npc.type == NPCID.SkeletronHead)
                 {
-                    if (Main.player.Count(p => p.active && !p.dead) == 0)
+                    if (Main.player.Count(p => p.active && !p.dead && !p.ghost) == 0)
                     {
                         npc.active = false;
                     }
                     npc.TargetClosest();
                     Player player = Main.player[npc.target];
-                    if(!Phase2)
+                    if (!Phase2)
                     {
-                        PhaseChange2++;
-                        if(PhaseChange2 < 120)
+                        int i2 = (int)PhaseChange;
+                        if(i2 == 79 || i2 == 179 || i2 == 279 || i2 == 379 || i2 == 479)
                         {
-                            if(PhaseChange2 % 30 == 0)
+                            o = Main.rand.Next(4);
+                        }
+                        npc.dontTakeDamage = true;
+                        PhaseChange2++;
+                        /*if (PhaseChange2 < 120)
+                        {
+                            if (PhaseChange2 % 30 == 0)
                             {
                                 Projectile.NewProjectile(npc.Center.X, npc.Center.Y, 5, 5,
                                     ModContent.ProjectileType<FiendBolt>(), 20, 1);
@@ -396,23 +393,24 @@ namespace Glorymod
                                     ModContent.ProjectileType<FiendBolt>(), 20, 1);
                             }
                         }
-                        if(PhaseChange2 > 120 && PhaseChange2 < 240)
+                        if (PhaseChange2 > 120 && PhaseChange2 < 240)
                         {
                         }
-                        if(PhaseChange2 > 240)
+                        if (PhaseChange2 > 240)
                         {
-                            if(PhaseChange2 % 20 == 0)
+                            if (PhaseChange2 % 20 == 0)
                             {
                                 Vector2 a = Vector2.Normalize(player.Center - npc.Center);
                                 a *= 3f;
                                 Projectile.NewProjectile(npc.Center, a, ModContent.ProjectileType<DemonClaw>(), 20, 1);
                             }
                         }
-                        if(PhaseChange2 > 360)
+                        */
+                        if (PhaseChange2 > 360)
                         {
                             PhaseChange2 = 0;
                         }
-                        if(Enter)
+                        if (Enter)
                         {
                             NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<Joint>());
                             NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<Hand>(), 0, npc.whoAmI);
@@ -422,14 +420,14 @@ namespace Glorymod
                         }
                         npc.rotation = MathHelper.Clamp(npc.velocity.X, MathHelper.ToRadians(-30), MathHelper.ToRadians(30));
                         PhaseChange++;
-                        if(PhaseChange < 120)
+                        if (PhaseChange < 120)
                         {
                             npc.TargetClosest();
                             Vector2 pos = new Vector2(player.Center.X - 200, player.Center.Y - 300);
                             npc.position.X = MathHelper.SmoothStep(npc.position.X, pos.X, .15f);
                             npc.position.Y = MathHelper.SmoothStep(npc.position.Y, pos.Y, .15f);
                         }
-                        if(PhaseChange > 120)
+                        if (PhaseChange > 120)
                         {
                             npc.TargetClosest();
                             Vector2 pos = new Vector2(player.Center.X + 200, player.Center.Y - 300);
@@ -437,6 +435,10 @@ namespace Glorymod
                             npc.position.Y = MathHelper.SmoothStep(npc.position.Y, pos.Y, .15f);
                         }
                         if(PhaseChange > 240)
+                        {
+                            PhaseChange = 0;
+                        }
+                        /*if (PhaseChange > 240)
                         {
                             int A = Projectile.NewProjectile(player.Center, npc.velocity, ModContent.ProjectileType<ViscountDeathray>(), 20, 1);
                             Main.projectile[A].ai[1] = 0;
@@ -449,47 +451,158 @@ namespace Glorymod
                             int E = Projectile.NewProjectile(player.Center, npc.velocity, ModContent.ProjectileType<ViscountDeathray>(), 20, 1);
                             Main.projectile[E].ai[1] = -1000;
                             PhaseChange = 0;
-                        }
-                        if(!NPC.AnyNPCs(ModContent.NPCType<Hand>()) && !NPC.AnyNPCs(ModContent.NPCType<Hand2>()))
+                        }*/
+                        if (!NPC.AnyNPCs(ModContent.NPCType<Hand>()) && !NPC.AnyNPCs(ModContent.NPCType<Hand2>()))
                         {
                             Phase2 = true;
                             Enter = true;
+                            PhaseChange = -60;
                         }
                     }
                     else
                     {
+                        int i2 = (int)PhaseChange;
+                        if (i2 == 79 || i2 == 179 || i2 == 279 || i2 == 379 || i2 == 479)
+                        {
+                            o = Main.rand.Next(4);
+                        }
+                        if (i2 == 80 || i2 == 180 || i2 == 280 || i2 == 380 || i2 == 480)
+                        {
+                            switch (o)
+                            {
+                                case 1:
+                                    for (int i = 0; i < 90; i++)
+                                    {
+                                        Vector2 s = npc.Center + new Vector2(0, 10).RotatedBy(MathHelper.ToDegrees(i * 4));
+                                        Dust.NewDust(s, 0, 0, ModContent.DustType<ViscountCyan>());
+                                    }
+                                    break;
+                                case 2:
+                                    for (int i = 0; i < 90; i++)
+                                    {
+                                        Vector2 s = npc.Center + new Vector2(0, 10).RotatedBy(MathHelper.ToDegrees(i * 4));
+                                        Dust.NewDust(s, 0, 0, ModContent.DustType<ViscountRed>());
+                                    }
+                                    break;
+                                case 3:
+                                    for (int i = 0; i < 90; i++)
+                                    {
+                                        Vector2 s = npc.Center + new Vector2(0, 10).RotatedBy(MathHelper.ToDegrees(i * 4));
+                                        Dust.NewDust(s, 0, 0, ModContent.DustType<ViscountPurple>());
+                                    }
+                                    break;
+                            }
+                        }
+                        if (i2 == 140 || i2 == 240 || i2 == 340 || i2 == 440 || i2 == 540)
+                        {
+                            switch (o)
+                            {
+                                case 1:
+                                    int A = Projectile.NewProjectile(player.Center, npc.velocity, ModContent.ProjectileType<ViscountDeathray>(), 20, 1);
+                                    Main.projectile[A].ai[1] = 0;
+                                    int B = Projectile.NewProjectile(player.Center, npc.velocity, ModContent.ProjectileType<ViscountDeathray>(), 20, 1);
+                                    Main.projectile[B].ai[1] = 1000;
+                                    int C = Projectile.NewProjectile(player.Center, npc.velocity, ModContent.ProjectileType<ViscountDeathray>(), 20, 1);
+                                    Main.projectile[B].ai[1] = 2000;
+                                    int D = Projectile.NewProjectile(player.Center, npc.velocity, ModContent.ProjectileType<ViscountDeathray>(), 20, 1);
+                                    Main.projectile[D].ai[1] = 3000;
+                                    int E = Projectile.NewProjectile(player.Center, npc.velocity, ModContent.ProjectileType<ViscountDeathray>(), 20, 1);
+                                    Main.projectile[E].ai[1] = -1000;
+                                    break;
+                                case 2:
+                                    Projectile.NewProjectile(npc.Center, Vector2.Normalize(player.Center - npc.Center) * 3, ModContent.ProjectileType<SFireball>(), 20, 1);
+                                    Projectile.NewProjectile(npc.Center, Vector2.Normalize(player.Center - npc.Center) * 5, ModContent.ProjectileType<SFireball>(), 20, 1);
+                                    Projectile.NewProjectile(npc.Center, Vector2.Normalize(player.Center - npc.Center) * 7, ModContent.ProjectileType<SFireball>(), 20, 1);
+                                    Projectile.NewProjectile(npc.Center, Vector2.Normalize(player.Center - npc.Center) * 10, ModContent.ProjectileType<SFireball>(), 20, 1);
+                                    Projectile.NewProjectile(npc.Center, Vector2.Normalize(player.Center - npc.Center) * 15, ModContent.ProjectileType<SFireball>(), 20, 1);
+                                    Projectile.NewProjectile(npc.Center, Vector2.Normalize(player.Center - npc.Center) * 20, ModContent.ProjectileType<SFireball>(), 20, 1);
+                                    Projectile.NewProjectile(npc.Center, Vector2.Normalize(player.Center - npc.Center) * 25, ModContent.ProjectileType<SFireball>(), 20, 1);
+                                    Projectile.NewProjectile(npc.Center, Vector2.Normalize(player.Center - npc.Center) * 30, ModContent.ProjectileType<SFireball>(), 20, 1);
+                                    for (int i = 0; i < 20; i++)
+                                    {
+                                        Vector2 a = new Vector2(0, 15).RotatedBy(MathHelper.ToRadians(i * 18f));
+                                        Projectile.NewProjectile(npc.Center, a, ModContent.ProjectileType<SFireball>(), 20, 1, Main.myPlayer);
+                                    }
+                                    break;
+                                case 3:
+                                    Projectile.NewProjectile(player.Center.X + 500, player.Center.Y + 300, Vector2.Zero.X, Vector2.Zero.Y, ModContent.ProjectileType<Tornado>(), 20, 0);
+                                    Projectile.NewProjectile(player.Center.X - 500, player.Center.Y + 300, Vector2.Zero.X, Vector2.Zero.Y, ModContent.ProjectileType<Tornado>(), 20, 0);
+                                    break;
+                            }
+                        }
+                        
                         if (Enter)
                         {
                             NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<Joint>());
                             NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<Hand>(), 0, npc.whoAmI);
                             NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<Joint2>());
                             NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<Hand2>(), 0, npc.whoAmI);
+                            npc.dontTakeDamage = false;
                             Enter = false;
                         }
                         PhaseChange++;
-                        if(PhaseChange > 240)
+
+                        if (PhaseChange < 120)
+                        {
+                            npc.TargetClosest();
+                            Vector2 pos = new Vector2(player.Center.X - 200, player.Center.Y - 300);
+                            npc.position.X = MathHelper.SmoothStep(npc.position.X, pos.X, .15f);
+                            npc.position.Y = MathHelper.SmoothStep(npc.position.Y, pos.Y, .15f);
+                        }
+                        if (PhaseChange > 120)
+                        {
+                            npc.TargetClosest();
+                            Vector2 pos = new Vector2(player.Center.X + 200, player.Center.Y - 300);
+                            npc.position.X = MathHelper.SmoothStep(npc.position.X, pos.X, .15f);
+                            npc.position.Y = MathHelper.SmoothStep(npc.position.Y, pos.Y, .15f);
+                        }
+                        if (!(PhaseChange > 260 && PhaseChange < 400)) npc.rotation = 0;
+                        /*if (PhaseChange == 40)
+                        {
+                            Main.PlaySound(29, (int)npc.Center.X, (int)npc.Center.Y, 105);
+                            directionA = Vector2.Normalize(player.Center - npc.Center) * 15;
+                        }
+                        if (PhaseChange == 60)
+                        {
+                            Main.PlaySound(15, (int)npc.Center.X, (int)npc.Center.Y, 0);
+                            npc.velocity = directionA;
+                        }
+                        if (PhaseChange == 120)
+                        {
+                            Main.PlaySound(15, (int)npc.Center.X, (int)npc.Center.Y, 0);
+                            npc.velocity = directionA;
+                        }
+                        if (PhaseChange == 200)
+                        {
+                            Main.PlaySound(29, (int)npc.Center.X, (int)npc.Center.Y, 105);
+                            directionA = Vector2.Normalize(player.Center - npc.Center) * 15;
+                        }
+                        if (PhaseChange == 220)
+                        {
+                            Main.PlaySound(15, (int)npc.Center.X, (int)npc.Center.Y, 0);
+                            npc.velocity = directionA;
+                        }
+                        if (PhaseChange > 260 && PhaseChange < 400)
+                        {
+                            degrees += 6;
+                            if (degrees >= 360) degrees = 0;
+                            npc.rotation = MathHelper.ToRadians(degrees);
+                            if (PhaseChange % 3 == 0)
+                                Projectile.NewProjectile(npc.position, Vector2.One.RotatedBy(npc.rotation) * 5, ProjectileID.DemonSickle, 20, 2f, Main.myPlayer);
+                        }
+                        if(PhaseChange > 400)
+                        {
+                            if (PhaseChange % 20 == 0)
+                            {
+                                Vector2 a = Vector2.Normalize(player.Center - npc.Center);
+                                a *= 6f;
+                                Projectile.NewProjectile(npc.Center, a, ModContent.ProjectileType<DemonClaw>(), 20, 1, Main.myPlayer);
+                            }
+                        }*/
+                        if (PhaseChange > 600)
                         {
                             PhaseChange = 0;
-                        }
-                        npc.TargetClosest();
-                        Vector2 pos = new Vector2(player.Center.X, player.Center.Y);
-                        npc.position.X = MathHelper.SmoothStep(npc.position.X, pos.X, .05f);
-                        npc.position.Y = MathHelper.SmoothStep(npc.position.Y, pos.Y, .05f);
-                        if(PhaseChange == 0)
-                        {
-                            //sound
-                        }
-                        if(PhaseChange == 120)
-                        {
                             
-                        }
-                        if(PhaseChange > 260 && PhaseChange < 400)
-                        {
-                            //spiral
-                        }
-                        if(PhaseChange > 600)
-                        {
-                            PhaseChange = 0;
                         }
                     }
                 }
@@ -502,26 +615,25 @@ namespace Glorymod
         }
         public override void HitEffect(NPC npc, int hitDirection, double damage)
         {
-            if(npc.active)
+            if (npc.active)
             {
                 if (npc.type == 114 && npc.life <= 0)
                 {
                     NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<WoFeye1>());
                 }
             }
-            
+
         }
-        
+
         public override bool CheckDead(NPC npc)
         {
-            
+            if(npc.type == NPCID.SkeletronHead)
+            {
+               Gore.NewGoreDirect(npc.Center, npc.velocity, mod.GetGoreSlot("Gores/HeadGore"), 1f);
+            }
             return true;
         }
-        
-
     }
-
-
 
     public class BasaltLaser : ModProjectile
     {
@@ -562,8 +674,10 @@ namespace Glorymod
         NPC npce2;
         public override void AI()
         {
-            if (Main.player.Count(p => p.active && !p.dead) == 0 || !NPC.AnyNPCs(NPCID.SkeletronHead) || !NPC.AnyNPCs(ModContent.NPCType<Hand>()))
+            if (Main.player.Count(p => p.active && !p.dead) == 0 || !NPC.AnyNPCs(NPCID.SkeletronHead) || !NPC.AnyNPCs(ModContent.NPCType<Hand2>()))
             {
+                Gore.NewGoreDirect(npc.Center, npc.velocity, mod.GetGoreSlot("Gores/ArmGore"), 1f);
+                Gore.NewGoreDirect(npc.Center, npc.velocity.RotatedBy(MathHelper.PiOver2), mod.GetGoreSlot("Gores/ArmGore"), 1f);
                 npc.active = false;
             }
             Exist = false;
@@ -577,7 +691,7 @@ namespace Glorymod
                 }
 
             }
-            
+
             for (int i = 0; i < Main.maxNPCs; i++)
             {
                 npce2 = Main.npc[i];
@@ -602,7 +716,8 @@ namespace Glorymod
             if (npc.active)
             {
                 DrawArm(spriteBatch, Main.npcTexture[npc.type]);
-            } return false;
+            }
+            return false;
         }
         public override void PostDraw(SpriteBatch spriteBatch, Color drawColor)
         {
@@ -644,6 +759,8 @@ namespace Glorymod
         {
             if (Main.player.Count(p => p.active && !p.dead) == 0 || !NPC.AnyNPCs(NPCID.SkeletronHead) || !NPC.AnyNPCs(ModContent.NPCType<Hand2>()))
             {
+                Gore.NewGoreDirect(npc.Center, npc.velocity, mod.GetGoreSlot("Gores/ArmGore"), 1f);
+                Gore.NewGoreDirect(npc.Center, npc.velocity.RotatedBy(MathHelper.PiOver2), mod.GetGoreSlot("Gores/ArmGore"), 1f);
                 npc.active = false;
             }
             for (int i = 0; i < Main.maxNPCs; i++)

@@ -11,6 +11,7 @@ namespace Glorymod.Projectiles
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Red Flames");
+           
         }
         public override void SetDefaults()
         {

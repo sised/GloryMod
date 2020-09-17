@@ -63,7 +63,7 @@ namespace Glorymod.Items.Weapons.Summon
             if (!player.HasBuff(ModContent.BuffType<Spawned>()))
             {
                 // This is needed so the buff that keeps your minion alive and allows you to despawn it properly applies
-                player.AddBuff(item.buffType, 2);
+                player.AddBuff(item.buffType, 3);
 
                 // Here you can change where the minion is spawned. Most vanilla minions spawn at the cursor position.
                 position = Main.MouseWorld;

@@ -55,37 +55,39 @@ namespace Glorymod.NPCs
             {
                 Vector2 a = new Vector2(npc.Center.X + Main.rand.Next(60) - Main.rand.Next(60), npc.Center.Y + Main.rand.Next(20) - Main.rand.Next(20));
                 Vector2 b = new Vector2(Main.rand.Next(7), Main.rand.Next(7));
-                if (i == 0)
+                switch (i)
                 {
-                    Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/apgore1"), 1f);
-                }
-                if (i == 1)
-                {
-                    Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/apgore2"), 1f);
-                }
-                if (i == 2)
-                {
-                    Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/apgore3"), 1f);
-                }
-                if (i == 3)
-                {
-                    Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/apgore4"), 1f);
-                }
-                if (i == 4)
-                {
-                    Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/apgore5"), 1f);
-                }
-                if (i == 5)
-                {
-                    Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/apgore5"), 1f);
-                }
-                if (i == 6)
-                {
-                    Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/apgore1"), 1f);
-                }
-                if (i == 7)
-                {
-                    Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/apgore2"), 1f);
+                    case 0:
+                        Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/apgore1"), 1f);
+                        break;
+
+                    case 1:
+                        Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/apgore2"), 1f);
+                        break;
+
+                    case 2:
+                        Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/apgore3"), 1f);
+                        break;
+
+                    case 3:
+                        Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/apgore4"), 1f);
+                        break;
+
+                    case 4:
+                        Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/apgore5"), 1f);
+                        break;
+
+                    case 5:
+                        Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/apgore5"), 1f);
+                        break;
+
+                    case 6:
+                        Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/apgore1"), 1f);
+                        break;
+
+                    case 7:
+                        Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/apgore2"), 1f);
+                        break;
                 }
 
             }
