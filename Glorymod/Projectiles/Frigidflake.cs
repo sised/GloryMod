@@ -16,6 +16,7 @@ namespace Glorymod.Projectiles
             // Don't mistake this with "if this is true, then it will automatically home". It is just for damage reduction for certain NPCs
             ProjectileID.Sets.Homing[projectile.type] = true;
             ProjectileID.Sets.MinionTargettingFeature[projectile.type] = true;
+            Main.projFrames[projectile.type] = 2;
         }
         public override bool? CanCutTiles()
         {
@@ -41,6 +42,14 @@ namespace Glorymod.Projectiles
         }
         public override void AI()
         {
+            if (++projectile.frameCounter >= 10)
+            {
+                projectile.frameCounter = 0;
+                if (++projectile.frame >= 2)
+                {
+                    projectile.frame = 0;
+                }
+            }
             projectile.rotation += projectile.direction * projectile.velocity.Length() * 0.03f;
             projectile.timeLeft = 999999999;
             Player player = Main.player[projectile.owner];

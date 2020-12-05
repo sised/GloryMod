@@ -30,7 +30,7 @@ namespace Glorymod.NPCs
             npc.defense = 12;
             npc.noGravity = true;
             npc.noTileCollide = true;
-            npc.lifeMax = 2000;
+            npc.lifeMax = 1500;
             npc.timeLeft = 60000;
             npc.knockBackResist = 0;
             npc.HitSound = SoundID.NPCHit21;
@@ -140,7 +140,7 @@ namespace Glorymod.NPCs
                     Degrees = 0;
                 }
                 Vector2 vector = new Vector2(-500, 0).RotatedBy(MathHelper.ToRadians(Degrees));
-                npc.position = (npce.Center + vector);
+                npc.position = npce.Center + vector;
             }
         }
     }
@@ -166,7 +166,7 @@ namespace Glorymod.NPCs
             npc.defense = 12;
             npc.noGravity = true;
             npc.noTileCollide = true;
-            npc.lifeMax = 2000;
+            npc.lifeMax = 1500;
             npc.timeLeft = 60000;
             npc.knockBackResist = 0;
             npc.HitSound = SoundID.NPCHit21;

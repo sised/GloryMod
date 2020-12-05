@@ -104,7 +104,6 @@ namespace Glorymod.NPCs
             }
             if (!dead)
             {
-                npc.scale = 0.8f + (1 - npc.life * 0.0003f);
                 if (Main.player.Count(p => p.active && !p.dead) == 0)
                 {
                     npc.active = false;

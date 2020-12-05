@@ -15,6 +15,7 @@ namespace Glorymod.NPCs
 	[AutoloadBossHead]
 	internal class EoW1 : EoW
 	{
+		int S = 25;
 		public override void OnHitPlayer(Player target, int damage, bool crit)
 		{
 			target.AddBuff(ModContent.BuffType<Crystallizing>(), 300);
@@ -35,10 +36,10 @@ namespace Glorymod.NPCs
 			npc.noGravity = true;
 			npc.lavaImmune = true;
 			npc.defense = 12;
-			npc.width = 35;
-			npc.height = 35;
+			npc.width = S;
+			npc.height = S;
 			npc.HitSound = SoundID.NPCHit4;
-			npc.DeathSound = SoundID.NPCDeath10;
+			npc.DeathSound = SoundID.Item27;
 			npc.boss = true;
 		}
 
@@ -52,6 +53,20 @@ namespace Glorymod.NPCs
 			if (npc.life <= 0 && Main.player.Count(p => p.active) > 0)
 			{
 				Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/EoW1"), 1f);
+				for (int i = 0; i < 5; i++)
+				{
+					Vector2 a = new Vector2(npc.position.X + (float)Main.rand.Next(10) - (float)Main.rand.Next(10), npc.position.Y + (float)Main.rand.Next(10) - (float)Main.rand.Next(10));
+					Vector2 b = new Vector2((float)Main.rand.Next(10) - (float)Main.rand.Next(10), (float)Main.rand.Next(10) - (float)Main.rand.Next(10));
+					Gore.NewGore(a,
+						b, mod.GetGoreSlot("Gores/EoW2"), 1f);
+				}
+				for (int i = 0; i < 3; i++)
+				{
+					Vector2 a = new Vector2(npc.position.X + (float)Main.rand.Next(10) - (float)Main.rand.Next(10), npc.position.Y + (float)Main.rand.Next(10) - (float)Main.rand.Next(10));
+					Vector2 b = new Vector2((float)Main.rand.Next(10) - (float)Main.rand.Next(10), (float)Main.rand.Next(10) - (float)Main.rand.Next(10));
+					Gore.NewGore(a,
+						b, mod.GetGoreSlot("Gores/EoW5"), 1f);
+				}
 			}
 		}
 		public override void CustomBehavior()
@@ -62,11 +77,27 @@ namespace Glorymod.NPCs
 
 	internal class EoW2 : EoW
 	{
+		int S = 25;
 		public override void HitEffect(int hitDirection, double damage)
 		{
 			if (npc.life <= 0 && Main.player.Count(p => p.active) > 0)
 			{
-				Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/EoW2"), 1f);
+				Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/EoW4"), 1f);
+				for(int i = 0; i < 5; i++)
+				{
+					Vector2 a = new Vector2(npc.position.X + (float)Main.rand.Next(10) - (float)Main.rand.Next(10), npc.position.Y + (float)Main.rand.Next(10) - (float)Main.rand.Next(10));
+					Vector2 b = new Vector2((float)Main.rand.Next(10) - (float)Main.rand.Next(10), (float)Main.rand.Next(10) - (float)Main.rand.Next(10));
+					Gore.NewGore(a,
+						b, mod.GetGoreSlot("Gores/EoW2"), 1f);
+				}
+				for (int i = 0; i < 3; i++)
+				{
+					Vector2 a = new Vector2(npc.position.X + (float)Main.rand.Next(10) - (float)Main.rand.Next(10), npc.position.Y + (float)Main.rand.Next(10) - (float)Main.rand.Next(10));
+					Vector2 b = new Vector2((float)Main.rand.Next(10) - (float)Main.rand.Next(10), (float)Main.rand.Next(10) - (float)Main.rand.Next(10));
+					Gore.NewGore(a,
+						b, mod.GetGoreSlot("Gores/EoW5"), 1f);
+				}
+
 			}
 		}
 		public override void SetDefaults()
@@ -79,20 +110,35 @@ namespace Glorymod.NPCs
 			npc.noGravity = true;
 			npc.lavaImmune = true;
 			npc.defense = 12;
-			npc.width = 35;
-			npc.height = 35;
+			npc.width = S;
+			npc.height = S;
 			npc.HitSound = SoundID.NPCHit4;
-			npc.DeathSound = SoundID.NPCDeath10;
+			npc.DeathSound = SoundID.Item27;
 		}
 	}
 
 	internal class EoW3 : EoW
 	{
+		int S = 25;
 		public override void HitEffect(int hitDirection, double damage)
 		{
 			if (npc.life <= 0 && Main.player.Count(p => p.active) > 0)
 			{
+				for (int i = 0; i < 5; i++)
+				{
+					Vector2 a = new Vector2(npc.position.X + (float)Main.rand.Next(10) - (float)Main.rand.Next(10), npc.position.Y + (float)Main.rand.Next(10) - (float)Main.rand.Next(10));
+					Vector2 b = new Vector2((float)Main.rand.Next(10) - (float)Main.rand.Next(10), (float)Main.rand.Next(10) - (float)Main.rand.Next(10));
+					Gore.NewGore(a,
+						b, mod.GetGoreSlot("Gores/EoW2"), 1f);
+				}
 				Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/EoW3"), 1f);
+				for (int i = 0; i < 3; i++)
+				{
+					Vector2 a = new Vector2(npc.position.X + (float)Main.rand.Next(10) - (float)Main.rand.Next(10), npc.position.Y + (float)Main.rand.Next(10) - (float)Main.rand.Next(10));
+					Vector2 b = new Vector2((float)Main.rand.Next(10) - (float)Main.rand.Next(10), (float)Main.rand.Next(10) - (float)Main.rand.Next(10));
+					Gore.NewGore(a,
+						b, mod.GetGoreSlot("Gores/EoW5"), 1f);
+				}
 			}
 		}
 		public override void SetDefaults()
@@ -105,10 +151,10 @@ namespace Glorymod.NPCs
 			npc.noGravity = true;
 			npc.lavaImmune = true;
 			npc.defense = 12;
-			npc.width = 35;
-			npc.height = 35;
+			npc.width = S;
+			npc.height = S;
 			npc.HitSound = SoundID.NPCHit4;
-			npc.DeathSound = SoundID.NPCDeath10;
+			npc.DeathSound = SoundID.Item27;
 		}
 
 		public override void Init()
@@ -128,8 +174,8 @@ namespace Glorymod.NPCs
 
 		public override void Init()
 		{
-			minLength = 20;
-			maxLength = 20;
+			minLength = 30;
+			maxLength = 30;
 			tailType = NPCType<EoW3>();
 			bodyType = NPCType<EoW2>();
 			headType = NPCType<EoW1>();
@@ -149,8 +195,8 @@ namespace Glorymod.NPCs
 		 */
 		public bool head;
 		public bool tail;
-		public int minLength = 20;
-		public int maxLength = 20;
+		public int minLength = 30;
+		public int maxLength = 30;
 		public int headType;
 		public int bodyType;
 		public int tailType;

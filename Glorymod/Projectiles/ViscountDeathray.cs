@@ -164,6 +164,7 @@ namespace Glorymod.Projectiles
 							Player player1 = Main.player[Main.npc[iCarry].target];
 							projectile.position.X = player1.position.X - projectile.ai[1];
 							projectile.position.Y = player1.position.Y;
+							projectile.position.X = MathHelper.Clamp(projectile.position.X, 1, Main.maxTilesX * 16 - 1);
 						}
 
 						break;

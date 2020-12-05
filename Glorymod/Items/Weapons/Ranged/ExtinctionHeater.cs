@@ -44,7 +44,7 @@ namespace Glorymod.Items.Weapons.Ranged
             if (player.altFunctionUse == 2)
             {
                 item.shootSpeed = 30;
-                item.damage = 12;                
+                item.damage = 10;                
                 item.useAnimation = 12;
                 item.useTime = 12;
                 item.shoot = ProjectileType<Hook>();

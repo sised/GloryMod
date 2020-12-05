@@ -46,6 +46,7 @@ namespace Glorymod
         public static Texture2D boneArm2Texture;
         public override void Unload()
         {
+            Main.npcFrameCount[NPCID.SkeletronHead] = 1;
             boneArmTexture = null;
             boneArm2Texture = null;
             vanillaWOFTexture = null;
@@ -112,10 +113,12 @@ namespace Glorymod
         }
         public override void Load()
         {
+            On.Terraria.NPC.Collision_DecideFallThroughPlatforms += NPC_Collision_DecideFallThroughPlatforms1;
             vanillaWOFHeadTexture = Main.npcHeadBossTexture[22];
             vanillaWOFTexture = Main.npcTexture[NPCID.WallofFlesh];
             if (ModContent.GetInstance<GloriousConfig>().MenaceMode)
             {
+                Main.npcFrameCount[NPCID.SkeletronHead] = 3;
                 Main.instance.LoadNPC(NPCID.SkeletronHead);
                 Main.npcTexture[NPCID.SkeletronHead] = GetTexture("NPCs/Skeletron");
                 Main.instance.LoadNPC(NPCID.SkeletronHand);
@@ -160,7 +163,7 @@ namespace Glorymod
             {
                 if (ModContent.GetInstance<GloriousConfig>().MenaceMode)
                 {
-                    
+                    Main.npcFrameCount[NPCID.SkeletronHead] = 1;
                     Main.npcHeadBossTexture[22] = GetTexture("Terraria/NPC_Head_Boss_22");
                     Main.instance.LoadNPC(NPCID.WallofFlesh);
                     Main.npcTexture[NPCID.WallofFlesh] = GetTexture("Terraria/NPC_113");
@@ -175,31 +178,17 @@ namespace Glorymod
             }
             if (Main.netMode != NetmodeID.Server)
             {
-                // First, you load in your shader file.
-                // You'll have to do this regardless of what kind of shader it is,
-                // and you'll have to do it for every shader file.
-                // This example assumes you have both armour and screen shaders.
-
                 Ref<Effect> SWolferShader = new Ref<Effect>(GetEffect("Effects/WolferShader"));
-                // To add a dye, simply add this for every dye you want to add.
-                // "PassName" should correspond to the name of your pass within the *technique*,
-                // so if you get an error here, make sure you've spelled it right across your effect file.
-
-
-                // If your dye takes specific parameters such as colour, you can append them after binding the shader.
-                // IntelliSense should be able to help you out here.   
-
-
-                // To bind a miscellaneous, non-filter effect, use this.
-                // If you're actually using this, you probably already know what you're doing anyway.
-
-
-                // To bind a screen shader, use this.
-                // EffectPriority should be set to whatever you think is reasonable.   
-
                 Filters.Scene["WolferShader"] = new Filter(new ScreenShaderData(SWolferShader, "PixelShaderFunction"), EffectPriority.Medium);
             }
 
+        }
+        private bool NPC_Collision_DecideFallThroughPlatforms1(On.Terraria.NPC.orig_Collision_DecideFallThroughPlatforms orig, NPC self)
+        {
+            bool other = false;
+            if (self.type == ModContent.NPCType<NPCs.NeonTyrant>() && self.target >= 0 && Main.player[self.target].position.Y > self.position.Y + self.height)
+                other = true;
+            return orig(self) || other;
         }
 
     }

@@ -4,6 +4,7 @@ using Terraria.ID;
 using Microsoft.Xna.Framework;
 using System.Linq;
 using System;
+using Glorymod.Dusts;
 
 namespace Glorymod.NPCs
 {
@@ -81,6 +82,7 @@ namespace Glorymod.NPCs
             projectile.friendly = false;
             projectile.aiStyle = 1;
             projectile.tileCollide = false;
+            projectile.timeLeft = 75;
         }
         public override void OnHitPlayer(Player target, int damage, bool crit)
         {
@@ -89,6 +91,14 @@ namespace Glorymod.NPCs
         public override void AI()
         {
             projectile.rotation = 0;
+        }
+        public override bool PreKill(int timeLeft)
+        {
+            for(int i = 0; i < 2; i++)
+            {
+                Dust.NewDust(projectile.position, projectile.width, projectile.height, ModContent.DustType<ScarletDust>());
+            }
+            return true;
         }
     }
 }

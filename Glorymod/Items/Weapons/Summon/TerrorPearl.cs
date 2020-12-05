@@ -41,7 +41,7 @@ namespace Glorymod.Items.Weapons.Summon
         }
         public override void SetDefaults()
         {
-            item.damage = 40;
+            item.damage = 35;
             item.knockBack = 3f;
             item.mana = 10;
             item.width = 32;

@@ -25,6 +25,7 @@ namespace Glorymod.NPCs
             //npc.dontTakeDamage = true;
             npc.damage = 0;
             npc.lifeMax = 10;
+            npc.dontTakeDamage = true;
             
         }
         public void Despawn()
