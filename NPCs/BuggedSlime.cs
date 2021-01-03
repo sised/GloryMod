@@ -2,10 +2,15 @@
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
+using Glorymod.Items.Materials;
 namespace Glorymod.NPCs
 {
     public class BuggedSlime : ModNPC
     {
+        public override void NPCLoot()
+        {
+            Item.NewItem(npc.Center, ModContent.ItemType<MainBat>());
+        }
         public int timer2;
         public override void SetStaticDefaults()
         {

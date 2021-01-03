@@ -19,7 +19,7 @@ namespace Glorymod.Items.Weapons.Ranged
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Extinction Heater");
-            Tooltip.SetDefault("Left click shoots, Right click uses grapple hook\nThe hook damages enemies and sets them on fire\nGlorious Drop");
+            Tooltip.SetDefault("Left click shoots, Right click uses grapple hook\nThe hook damages enemies and sets them on fire\nRare Glorious Drop");
         }
         public override void SetDefaults()
         {
@@ -198,7 +198,7 @@ namespace Glorymod.Items.Weapons.Ranged
                     //Draw chain
                     spriteBatch.Draw(mod.GetTexture("Items/Weapons/Ranged/Chain"), new Vector2(center.X - Main.screenPosition.X, center.Y - Main.screenPosition.Y),
                         new Rectangle(0, 0, Main.chain30Texture.Width, Main.chain30Texture.Height), drawColor, projRotation,
-                        new Vector2(Main.chain30Texture.Width * 0.5f, Main.chain30Texture.Height * 0.5f), 1f, SpriteEffects.None, 0f);
+                        new Vector2(Main.chain30Texture.Width, Main.chain30Texture.Height), 1f, SpriteEffects.None, 0f);
                 }
                 return true;
             }

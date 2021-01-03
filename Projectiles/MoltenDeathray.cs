@@ -127,6 +127,10 @@ namespace Glorymod.Projectiles
 		// The AI of the projectile
 		public override void AI()
 		{
+			if (NPC.AnyNPCs(ModContent.NPCType<BasaltBarricade>()))
+			{
+				projectile.active = false;
+			}
 			if (projectile.active)
 			{
 				warning++;
@@ -260,7 +264,6 @@ namespace Glorymod.Projectiles
 					}*/
 				}
 			}
-
 		}
 
 

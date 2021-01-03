@@ -11,7 +11,7 @@ namespace Glorymod.Items.Accessories.PreHm
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Voltaic Canister");
-            Tooltip.SetDefault("Slowly damages enemies in a massive radius\nCan also help in cave exploration since its particles provide light\nGlorious Drop");
+            Tooltip.SetDefault("Slowly damages enemies in a massive radius\nCan also help in cave exploration since its particles provide light\n'RIP Thunderstrung, you will be remembered'\nRare Glorious Drop");
             Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(3, 3));
         }
         public override void SetDefaults()

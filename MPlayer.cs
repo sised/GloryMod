@@ -48,7 +48,7 @@ namespace Glorymod
                 }
                 if (!NPC.AnyNPCs(NPCID.Guide))
                 {
-                    Main.NewText("The guide has respawned at your spawn point because of Menace mode", Color.Orange);
+                    Main.NewText("The guide has respawned at your spawn point because of Glory mod", Color.Orange);
                     NPC.NewNPC(spawnX * 16, spawnY * 16, NPCID.Guide); //multiplied by 16 since NewNPC uses tile cords and spawnpoint uses pixel cords
                 }
             }

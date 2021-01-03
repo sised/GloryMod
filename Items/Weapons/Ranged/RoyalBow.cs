@@ -18,7 +18,7 @@ namespace Glorymod.Items.Weapons.Ranged
         }
         public override void SetDefaults()
         {
-            item.damage = 15;
+            item.damage = 14;
             item.crit = 6;
             item.knockBack = 0f;
             item.width = 16;

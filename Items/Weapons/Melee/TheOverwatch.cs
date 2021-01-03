@@ -14,7 +14,7 @@ namespace Glorymod.Items.Weapons.Melee
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("The Overwatch");
-            Tooltip.SetDefault("Watches your enemies\nGlorious Drop");
+            Tooltip.SetDefault("Watches your enemies\n`RIP gazing darkness, you will be remembered`\nRare Glorious Drop");
             ItemID.Sets.GamepadWholeScreenUseRange[item.type] = true; // This lets the player target anywhere on the whole screen while using a controller.
             ItemID.Sets.LockOnIgnoresCollision[item.type] = true;
         }

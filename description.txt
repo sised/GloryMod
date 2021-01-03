@@ -1,24 +1,8 @@
-Glory mod adds a new difficulty mode, Menace mode, which can be activated through config.
-Changing the config will force a reload, going out of your way not to reload will cause the game to not function properly.
-Menace mode makes the game SUPER MEGA hard, not kidding, its really hard
-bosses  have new sprites, names, COMPLETELY new mechanics and uuh
+Glory mod replaces vanilla bosses with way harder modded ones, these bosses will challenge your motivation play them, and beating them is multiple times more rewarding due to their difficulty.
+They have unique AI and attacks, and in general have a lot more depth than the vanilla counterpart has.
 
-There's also a few new items, like, weapons, accessories materials and stuff
-so that's cool
+Not all bosses will be replaced, an explanation on why exists on my discord server which you can join by clicking the "homepage" button.
 
-Menace bosses which are done so far:
-King slime
-Eye of cthulhu
-Eater of Worlds
-Brain of Cthulhu
-Queen Bee
-Skeletron
-Wall of Flesh
-Destroyer
+It also adds some items you can use.
 
-The rest will be added in future versions
-
-oh and also
-it only works in expert mode.
-
-k, that's all i think, have fun
+Have fun, good luck.

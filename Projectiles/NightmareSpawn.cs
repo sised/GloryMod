@@ -133,6 +133,7 @@ namespace Glorymod.Projectiles
             ProjectileID.Sets.MinionSacrificable[projectile.type] = true;
             // Don't mistake this with "if this is true, then it will automatically home". It is just for damage reduction for certain NPCs
             ProjectileID.Sets.Homing[projectile.type] = true;
+            Main.projFrames[projectile.type] = 8;
         }
         public override void SetDefaults()
         {
@@ -148,7 +149,14 @@ namespace Glorymod.Projectiles
         public override void AI()
         {
             projectile.timeLeft = 10;
-
+            if (++projectile.frameCounter >= 5)
+            {
+                projectile.frameCounter = 0;
+                if (++projectile.frame >= 8)
+                {
+                    projectile.frame = 0;
+                }
+            }
             Player player = Main.player[projectile.owner];
             if (!player.HasBuff(ModContent.BuffType<Infanted>()))
             {

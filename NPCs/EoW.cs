@@ -1,5 +1,7 @@
 ﻿using Glorymod.Buffs;
 using Glorymod.Items.Accessories.PreHm;
+using Glorymod.Items.Weapons.Melee;
+using Glorymod.Items.Weapons.Ranged;
 using Glorymod.Projectiles;
 using Microsoft.Xna.Framework;
 using System;
@@ -23,6 +25,14 @@ namespace Glorymod.NPCs
 		{
 			Item.NewItem(npc.Center, ItemID.EaterOfWorldsBossBag);
 			Item.NewItem(npc.Center, ModContent.ItemType<PellucidCore>());
+			if (Main.rand.Next(10) == 5)
+			{
+				Item.NewItem(npc.Center, ModContent.ItemType<TheOverwatch>());
+			}
+			if (Main.rand.Next(10) == 5)
+			{
+				Item.NewItem(npc.Center, ModContent.ItemType<DemonSemen>());
+			}
 		}
 		public override void SetDefaults()
 		{

@@ -24,11 +24,11 @@ namespace Glorymod
             // Fix a tModLoader bug.
             var slots = new int[] {
                 GetSoundSlot(SoundType.Music, "Sounds/Music/EoCt"),
-                GetSoundSlot(SoundType.Music, "Sounds/Music/ChargedElementNe"),
                 GetSoundSlot(SoundType.Music, "Sounds/Music/IncreasedEfficency"),
                 GetSoundSlot(SoundType.Music, "Sounds/Music/UpgradeToIntellect"),
                 GetSoundSlot(SoundType.Music, "Sounds/Music/ClearAsGlass"),
                 GetSoundSlot(SoundType.Music, "Sounds/Music/FromTheCore"),
+                GetSoundSlot(SoundType.Music, "Sounds/Music/Existential"),
             };
             foreach (var slot in slots) // Other mods crashing during loading can leave Main.music in a weird state.
             {
@@ -69,6 +69,21 @@ namespace Glorymod
                 {
                     Filters.Scene["WolferShader"].Deactivate();
                 }
+
+
+                if (NPC.AnyNPCs(ModContent.NPCType<Corruption>()) && !Main.gameMenu)
+                {
+                    Filters.Scene.Activate("CorruptionShader");
+
+                    // Updating a filter
+                    Filters.Scene["CorruptionShader"].GetShader();
+
+
+                }
+                else
+                {
+                    Filters.Scene["CorruptionShader"].Deactivate();
+                }
             }
         }
         public override void UpdateMusic(ref int music, ref MusicPriority priority)
@@ -76,11 +91,6 @@ namespace Glorymod
             if (Main.myPlayer == -1 || Main.gameMenu || !Main.LocalPlayer.active)
             {
                 return;
-            }
-            if (NPC.AnyNPCs(ModContent.NPCType<NeonTyrant>()) && !Main.gameMenu)
-            {
-                music = GetSoundSlot(SoundType.Music, "Sounds/Music/ChargedElementNe");
-                priority = MusicPriority.BossMedium;
             }
             if (NPC.AnyNPCs(ModContent.NPCType<Brain>()) && !Main.gameMenu)
             {
@@ -93,6 +103,11 @@ namespace Glorymod
                     music = GetSoundSlot(SoundType.Music, "Sounds/Music/UpgradeToIntellect");
                 }
                 priority = MusicPriority.BossMedium;
+            }
+            if (NPC.AnyNPCs(ModContent.NPCType<Corruption>()) && !Main.gameMenu)
+            {
+                music = GetSoundSlot(SoundType.Music, "Sounds/Music/Existential");
+                priority = MusicPriority.BossHigh;
             }
             if (NPC.AnyNPCs(ModContent.NPCType<EoW1>()) && !Main.gameMenu)
             {
@@ -107,6 +122,7 @@ namespace Glorymod
         }
         public override void Load()
         {
+            On.Terraria.NPC.Collision_DecideFallThroughPlatforms += NPC_Collision_DecideFallThroughPlatforms1;
             vanillaWOFHeadTexture = Main.npcHeadBossTexture[22];
             vanillaWOFTexture = Main.npcTexture[NPCID.WallofFlesh];
             if (1 == 1) //supposed to test for menace mode
@@ -133,7 +149,7 @@ namespace Glorymod
 
                 Main.instance.LoadGore(136);
                 Main.goreTexture[136] = GetTexture("NPCs/WormFixer");
-                Main.npcHeadBossTexture[22] = GetTexture("NPCs/BasaltBarricadeHead");
+                Main.npcHeadBossTexture[22] = GetTexture("NPCs/BasaltBarricade_Head_Boss");
                 Main.instance.LoadNPC(NPCID.WallofFlesh);
                 Main.npcTexture[NPCID.WallofFlesh] = GetTexture("NPCs/WoFmouth");
 
@@ -163,6 +179,7 @@ namespace Glorymod
                 // This example assumes you have both armour and screen shaders.
 
                 Ref<Effect> SWolferShader = new Ref<Effect>(GetEffect("Effects/WolferShader"));
+                Ref<Effect> SCorruptionShader = new Ref<Effect>(GetEffect("Effects/CorruptionShader"));
                 // To add a dye, simply add this for every dye you want to add.
                 // "PassName" should correspond to the name of your pass within the *technique*,
                 // so if you get an error here, make sure you've spelled it right across your effect file.
@@ -180,9 +197,16 @@ namespace Glorymod
                 // EffectPriority should be set to whatever you think is reasonable.   
 
                 Filters.Scene["WolferShader"] = new Filter(new ScreenShaderData(SWolferShader, "PixelShaderFunction"), EffectPriority.Medium);
+                Filters.Scene["CorruptionShader"] = new Filter(new ScreenShaderData(SCorruptionShader, "PixelShaderFunction"), EffectPriority.High);
             }
 
         }
-
+        private bool NPC_Collision_DecideFallThroughPlatforms1(On.Terraria.NPC.orig_Collision_DecideFallThroughPlatforms orig, NPC self)
+        {
+            bool other = false;
+            if (self.type == ModContent.NPCType<NPCs.NeonTyrant>() && self.target >= 0 && Main.player[self.target].position.Y > self.position.Y + self.height)
+                other = true;
+            return orig(self) || other;
+        }
     }
 }

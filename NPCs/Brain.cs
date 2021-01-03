@@ -4,6 +4,8 @@ using Terraria.ID;
 using Microsoft.Xna.Framework;
 using System.Threading;
 using Glorymod.Projectiles;
+using Glorymod.Items.Weapons.Melee;
+using Glorymod.Items.Weapons.Ranged;
 using System.Dynamic;
 using Glorymod.Items.Materials;
 using System.Linq;
@@ -30,6 +32,14 @@ namespace Glorymod.NPCs
             Item.NewItem(npc.Center, ItemID.BrainOfCthulhuBossBag);
             Item.NewItem(npc.Center, ItemID.TigerClimbingGear);
             Item.NewItem(npc.Center, ModContent.ItemType<AtomicPointer>());
+            if (Main.rand.Next(10) == 5)
+			{
+				Item.NewItem(npc.Center, ModContent.ItemType<TheOverwatch>());
+			}
+			if (Main.rand.Next(10) == 5)
+			{
+				Item.NewItem(npc.Center, ModContent.ItemType<DemonSemen>());
+			}
         }
         public override void SetStaticDefaults()
         {

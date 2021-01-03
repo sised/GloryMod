@@ -12,7 +12,7 @@ namespace Glorymod.Items.Materials
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Essence of Glory");
-            Tooltip.SetDefault("Contains a small amount of glory earned upon battle, \nUsed to crat most of Glorymod's items, stacks up to 9999.");            Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(5, 5));
+            Tooltip.SetDefault("Contains a small amount of glory earned upon battle, \nUsed to crat most of Glorymod's items, stacks up to 9999."); 
         }
         public override void SetDefaults()
         {

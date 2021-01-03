@@ -21,17 +21,18 @@ namespace Glorymod.NPCs
             Item.NewItem(npc.Center, ItemID.KingSlimeBossBag);
             Item.NewItem(npc.Center, ItemID.TigerClimbingGear);
             Item.NewItem(npc.Center, ModContent.ItemType<NeonCanister>());
+            if(Main.rand.Next(10) == 5)
+            {
+                Item.NewItem(npc.Center, ModContent.ItemType<VoltaicCanister>());
+            }
         }
         public override string HeadTexture => "Eathermod/NPCs/NeonTyrant_Head_Boss";
         bool alreadyExploded = false;
         int SubphaseChangeTimer;
         int timer2;
-        bool dead = false;
         int subphase = 1;
         int timer3;
         bool shot;
-        bool AIdead = false;
-        int timerAbove;
         bool P2begin = false;
         public override void SetStaticDefaults()
         {
@@ -96,23 +97,6 @@ namespace Glorymod.NPCs
         
         public override void AI()
         {
-            if(dead)
-            {
-                npc.velocity = Vector2.Zero;
-                npc.life = 10000;
-                npc.dontTakeDamage = true;
-                npc.scale -= 0.005f;
-                if(npc.scale < 0.5f)
-                {
-                    AIdead = true;
-                    npc.dontTakeDamage = true;
-                    npc.life = 0;
-                    npc.checkDead();
-                }
-            }
-            if(!dead)
-            {
-                npc.scale = 0.8f + (1 - npc.life * 0.0003f);
                 if (Main.player.Count(p => p.active && !p.dead) == 0)
                 {
                     npc.active = false;
@@ -132,11 +116,6 @@ namespace Glorymod.NPCs
                     {
                         subphase = 2;
                         timer3 = 0;
-                        for (int i = 0; i < 2; i++)
-                        {
-                            NPC.NewNPC((int)npc.Center.X + Main.rand.Next(160), (int)npc.Center.Y + Main.rand.Next(160), ModContent.NPCType<NeonSlime>());
-                        }
-
                     }
                     timer3++;
                     if (timer3 > 120 && npc.velocity.Y == 0)
@@ -149,8 +128,12 @@ namespace Glorymod.NPCs
                         {
                             npc.velocity.X = +6;
                         }
-                        npc.velocity.Y = -15;
-                        timer3 = 0;
+                        if(Main.rand.Next(5) < 3)
+                        {
+                            npc.velocity.Y = -15;
+                        }
+                        else npc.velocity.Y = -10;
+                    timer3 = 0;
                     }
                 }
                 if (Mworld.Menace == false)
@@ -158,17 +141,6 @@ namespace Glorymod.NPCs
                     npc.active = false;
                     Main.NewText("This ain't menace mode, neon tyrant is outta here.", 0, 221, 114);
                 }
-                timerAbove++;
-                if (Main.player[npc.target].Center.Y <= npc.Center.Y)
-                {
-                    timerAbove = 0;
-                    npc.noTileCollide = false;
-                }
-                else if (timerAbove > 250)
-                {
-                    npc.noTileCollide = true;
-                }
-
                 if (subphase == 2)
                 {
                     if (P2begin)
@@ -205,18 +177,12 @@ namespace Glorymod.NPCs
                     }
                     if (timer3 > 210)
                     {
-                        int rand = Main.rand.Next(10);
+                        int rand = Main.rand.Next(100);
                         switch (rand) //jokes
                         {
-                            case 1: Main.NewText("Show U236 some support, he has been very unstable as of late", 255, 191, 55); break;
                             case 2: Main.NewText("No doc i'm telling you it's not a cough, i googled it!", 255, 191, 55); break;
-                            case 3: Main.NewText("Fusion ain't 30 years away, i'm pretty sure it's 8 minutes and 20 seconds", 255, 191, 55); break;
-                            case 4: Main.NewText("I wish i was made of Radon instead, i could lose half of my weight in 3.8 days!", 255, 191, 55); break;
                             case 5: Main.NewText("No grandpa, you don't have to close the router before going to sleep", 255, 191, 55); break;
-                            case 6: Main.NewText("Atoms when they lose an electron: i'm positive i lost an electron", 255, 191, 55); break;
                             case 7: Main.NewText("Fahrenheit is so dumb that you even have to copy paste it's name from google", 255, 191, 55); break;
-                            case 8: Main.NewText("I lost my shoe, i have to buy a Neo one", 255, 191, 55); break;
-                            case 9: Main.NewText("Wait, what do you mean Mendeleev wasn't a precognitor?", 255, 191, 55); break;
                         }
                         for (int i = 0; i < 28; i++)
                         {
@@ -245,8 +211,12 @@ namespace Glorymod.NPCs
                         {
                             npc.velocity.X = +6;
                         }
-                        npc.velocity.Y = -15;
-                        timer3 = 0;
+                        if (Main.rand.Next(5) < 3)
+                        {
+                            npc.velocity.Y = -15;
+                        }
+                        else npc.velocity.Y = -10;
+                    timer3 = 0;
                     }
                     if (SubphaseChangeTimer > 600)
                     {
@@ -259,7 +229,7 @@ namespace Glorymod.NPCs
 
                     if (!alreadyExploded)
                     {
-                        npc.noTileCollide = true;
+                        //npc.noTileCollide = true;
                         npc.position.Y = Main.player[npc.target].Center.Y - 600f;
                         npc.position.X = Main.player[npc.target].Center.X - npc.width * 0.5f;
                         npc.velocity.X = 0;
@@ -305,63 +275,49 @@ namespace Glorymod.NPCs
                         alreadyExploded = false;
                         timer3 = 0;
                         SubphaseChangeTimer = 0;
+                        NPC.NewNPC((int)npc.Center.X + Main.rand.Next(15) - Main.rand.Next(15), (int)npc.Center.Y + Main.rand.Next(15) - Main.rand.Next(15), ModContent.NPCType<NeonSlime>());
+                        NPC.NewNPC((int)npc.Center.X + Main.rand.Next(15) - Main.rand.Next(15), (int)npc.Center.Y + Main.rand.Next(15) - Main.rand.Next(15), ModContent.NPCType<NeonSlime>());
                         subphase = 1;
-                        int rand = Main.rand.Next(10);
+                        int rand = Main.rand.Next(100);
                         switch (rand) //more jokes
                         {
                             case 1: Main.NewText("When i was little i ate some battery now i'm like this pls help me", 255, 191, 55); break;
-                            case 2: Main.NewText("FeMales, ironman?", 255, 191, 55); break;
                             case 3: Main.NewText("Electrons be like: Hey the physicist is coming! act cool!", 255, 191, 55); break;
-                            case 4: Main.NewText("I think these jokes are sodium funny. In fact, I slapped my neon that one!", 255, 191, 55); break;
-                            case 5: Main.NewText("Want to hear a joke about nitrogen oxide? NO!", 255, 191, 55); break;
                             case 6: Main.NewText("What happens when you lower your body temperature to -273°C?  Nothing, you're perfectly 0K!", 255, 191, 55); break;
-                            case 7: Main.NewText("Did you know that fahrenheit, celsius and kelvin are not the only temperature units?", 255, 191, 55); break;
-                            case 8: Main.NewText("Gold is Ausome, wouldn't you agree?", 255, 191, 55); break;
-                            case 9: Main.NewText("Wait, what do you mean silver's symbol ain't Si? No, not argentum, i said silver", 255, 191, 55); break;
+                            default: break;
                         }
                     }
                 }
-            }
+            
             
         }
         public override bool CheckDead()
         {
-            if (dead && AIdead)
+            NPC.downedSlimeKing = true;
+            for (int i = 0; i < 12; i++)
             {
-                NPC.downedSlimeKing = true;
-                for (int i = 0; i < 12; i++)
-                {
-                    Dust dust;
-                    dust = Main.dust[Terraria.Dust.NewDust(npc.position, npc.width, npc.height, 43, 0f, 0f, 0, new Color(255, 255, 255), 5f)];
-                }
-                for (int i = 0; i < 3; i++)
-                {
-                    Vector2 a = new Vector2(npc.Center.X + Main.rand.Next(20) - Main.rand.Next(20), npc.Center.Y + Main.rand.Next(20) - Main.rand.Next(20));
-                    Vector2 b = new Vector2(Main.rand.Next(3), Main.rand.Next(3));
-                    if (i == 0)
-                    {
-                        Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/NeonGore"), 1f);
-                    }
-                    if (i == 1)
-                    {
-                        Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/NeonGore"), 1f);
-                    }
-                    if (i == 2)
-                    {
-                        Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/NeonGore"), 1f);
-                    }
-                    NPC.NewNPC((int)a.X, (int)a.Y, ModContent.NPCType<NeonSlime>());
-                }
-                return true;
+                Dust dust;
+                dust = Main.dust[Terraria.Dust.NewDust(npc.position, npc.width, npc.height, 43, 0f, 0f, 0, new Color(255, 255, 255), 5f)];
             }
-            else
+            for (int i = 0; i < 3; i++)
             {
-                npc.life = 10000;
-                npc.dontTakeDamage = true;
-                npc.active = true;
-                dead = true;
-                return false;
+                Vector2 a = new Vector2(npc.Center.X + Main.rand.Next(20) - Main.rand.Next(20), npc.Center.Y + Main.rand.Next(20) - Main.rand.Next(20));
+                Vector2 b = new Vector2(Main.rand.Next(3), Main.rand.Next(3));
+                if (i == 0)
+                {
+                    Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/NeonGore"), 1f);
+                }
+                if (i == 1)
+                {
+                    Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/NeonGore"), 1f);
+                }
+                if (i == 2)
+                {
+                    Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/NeonGore"), 1f);
+                }
+                NPC.NewNPC((int)a.X, (int)a.Y, ModContent.NPCType<NeonSlime>());
             }
+            return true;
         }
     }
 }

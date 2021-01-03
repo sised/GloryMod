@@ -41,10 +41,6 @@ namespace Glorymod
                 {
                     target.AddBuff(BuffID.Confused, 10);
                 }
-                if (projectile.type == 55)
-                {
-                    target.AddBuff(BuffID.Electrified, 140);
-                }
             }
 
         }

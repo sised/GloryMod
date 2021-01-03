@@ -4,25 +4,11 @@ using Microsoft.Xna.Framework;
 using Terraria.ModLoader;
 using Glorymod.NPCs;
 using Glorymod.Projectiles;
-using System;
 using Glorymod.Buffs;
 using System.Linq;
-using Microsoft.Xna.Framework.Graphics;
-using IL.Terraria.DataStructures;
-using Terraria.DataStructures;
-using Terraria.GameInput;
-using Terraria.ModLoader.IO;
-using Glorymod;
-using Terraria.GameContent.Dyes;
-using Terraria.GameContent.UI;
-using Terraria.Graphics.Effects;
-using Terraria.Graphics.Shaders;
-using Terraria.UI;
+using Glorymod.Items.Weapons.Melee;
 using Glorymod.Items.Accessories.Hm;
 using System.Collections.Generic;
-using System.Deployment.Internal;
-using System.Threading;
-using Ionic.Zip;
 
 namespace Glorymod
 {
@@ -43,6 +29,7 @@ namespace Glorymod
         public float targetY = 0;
         public int HP;
         public bool Phase2 = false;
+        public int MinionIdentity;
 
         bool Exist = false;
         int Ypos = -300;
@@ -50,6 +37,10 @@ namespace Glorymod
         {
             if(npc.type == NPCID.WallofFlesh)
             {
+                if (Main.rand.Next(200) == 5)
+                {
+                    Item.NewItem(npc.Center, ModContent.ItemType<Gungnir>());
+                }
                 Item.NewItem(npc.Center, ModContent.ItemType<TrophyOfMenace>());
             }
         }
@@ -98,16 +89,9 @@ namespace Glorymod
                     npc.lifeMax = 17000;
                     npc.defense = 15;
                 }
-
-                if(npc.type == NPCID.SkeletronHead)
-                {
-                    npc.GivenName = "Fiend Viscount";
-                    npc.aiStyle = -1;
-                }
             }
             
         }
-        
         public override void ModifyHitPlayer(NPC npc, Player target, ref int damage, ref bool crit)
         {
             if(npc.active)
@@ -194,161 +178,222 @@ namespace Glorymod
                 if (Mworld.Menace && npc.type == NPCID.WallofFlesh)
                 {
                     npc.velocity.X = MathHelper.Clamp(npc.velocity.X, -2f, +2f);
-                    PhaseChange++;
-                    if (PhaseChange > 275 && Enter)
-                    {
-                        Enter = false;
-                        PhaseChange = 0;
-                        npc.defense = 15;
-                    }
-                    if (Enter)
-                    {
-                        npc.defense = 75;
-                        BlazingRadious -= 5;
-                    }
-
-                    if(!Enter)
-                    {
-                        if(PhaseChange < 300)
-                        {
-                            BlazingRadious = 125;
-                        }
-                        if(PhaseChange > 300 && PhaseChange < 351)
-                        {
-                            BlazingRadious += 17.5f;
-                        }
-                        if(PhaseChange == 351)
-                        {
-                            Projectile.NewProjectile(npc.Center, npc.velocity, ModContent.ProjectileType<MoltenDeathray>(), 40, 1);
-                            
-                        }
-                        if(PhaseChange == 471)
-                        {
-                            for (int i = 0; i < 30; i++)
-                            {
-                                if (npc.velocity.X > 0)
-                                {
-                                    Projectile.NewProjectile(npc.Center.X + i * 75, npc.Center.Y, 0f, 4f, ModContent.ProjectileType<WoFshard>(), 30, 1);
-                                    Projectile.NewProjectile(npc.Center.X + i * 75, npc.Center.Y, 0f, -4f, ModContent.ProjectileType<WoFshard>(), 30, 1);
-                                }
-                                if (npc.velocity.X < 0)
-                                {
-                                    Projectile.NewProjectile(npc.Center.X - i * 75, npc.Center.Y, 0f, 4f, ModContent.ProjectileType<WoFshard>(), 30, 1);
-                                    Projectile.NewProjectile(npc.Center.X - i * 75, npc.Center.Y, 0f, -4f, ModContent.ProjectileType<WoFshard>(), 30, 1);
-                                }
-                            }
-                        }
-                        if(PhaseChange > 350 && PhaseChange < 700)
-                        {
-                            if(npc.velocity.X > 0)
-                            {
-                                npc.rotation = npc.velocity.ToRotation();
-                            }
-                            else
-                            {
-                                npc.rotation = npc.velocity.RotatedBy(MathHelper.PiOver2 * 2).ToRotation();
-                            }
-                        }
-                        if(PhaseChange > 700 && PhaseChange < 751)
-                        {
-                            BlazingRadious += 10;
-                        }
-                        if(PhaseChange == 751)
-                        {
-                            Main.PlaySound(29, (int)npc.Center.X, (int)npc.Center.Y, 105);
-                        }
-                        if(PhaseChange == 800)
-                        {
-                            Main.PlaySound(15, (int)npc.Center.X, (int)npc.Center.Y, 0);
-                            if (npc.velocity.X > 0)
-                            {
-                                npc.velocity.X = 35;
-                            }
-                            if (npc.velocity.X < 0)
-                            {
-                                npc.velocity.X = -35;
-                            }
-                        }
-                        if(PhaseChange > 800 && PhaseChange < 900)
-                        {
-                            if (PhaseChange % 10 == 0 && npc.life < npc.lifeMax / 3 && npc.velocity.X > 0)
-                            {
-                                Main.PlaySound(SoundID.Item33, (int)npc.Center.X, (int)npc.Center.Y);
-                                Vector2 a = new Vector2(0, 5).RotatedBy(MathHelper.ToRadians(PhaseChange - 900 * 2 + 130)) * 3;
-                                Projectile.NewProjectile(npc.Center, a, ModContent.ProjectileType<BasaltLaser>(), 30, 1);
-                            }
-                            if (PhaseChange % 10 == 0 && npc.life < npc.lifeMax / 3 && npc.velocity.X < 0)
-                            {
-                                Main.PlaySound(SoundID.Item33, (int)npc.Center.X, (int)npc.Center.Y);
-                                Vector2 a = new Vector2(0, 5).RotatedBy(MathHelper.ToRadians(PhaseChange - 900 * 2 - 50)) * 3;
-                                Projectile.NewProjectile(npc.Center, a, ModContent.ProjectileType<BasaltLaser>(), 30, 1);
-                            }
-                            if (npc.velocity.X > 0)
-                            {
-                                npc.velocity.X = 35 - ((PhaseChange - 800) * 0.33f);
-                            }
-                            if (npc.velocity.X < 0)
-                            {
-                                npc.velocity.X = -35 + ((PhaseChange - 800) * 0.33f);
-                            }
-                        }
-                        if(PhaseChange > 900 && PhaseChange < 951)
-                        {
-                            BlazingRadious -= 10;
-                        }
-                        if(PhaseChange == 951 || PhaseChange == 1000 || PhaseChange == 1050 || PhaseChange == 1100 || PhaseChange == 1150)
-                        {
-                            
-                            if(npc.velocity.X > 0)
-                            {
-                                Main.NewText("a");
-                                if(Main.player[npc.target].velocity.X > 0)
-                                {
-                                    Prediction = (Main.player[npc.target].Center - npc.Center).RotatedBy(MathHelper.ToRadians(-Main.player[npc.target].velocity.X + Main.player[npc.target].velocity.Y));
-                                }
-                                if (Main.player[npc.target].velocity.X < 0)
-                                {
-                                    Prediction = (Main.player[npc.target].Center - npc.Center).RotatedBy(MathHelper.ToRadians(-Main.player[npc.target].velocity.X * 3 + Main.player[npc.target].velocity.Y));
-                                }
-                            }
-                            if (npc.velocity.X < 0)
-                            {
-                                if (Main.player[npc.target].velocity.X > 0)
-                                {
-                                    Prediction = (Main.player[npc.target].Center - npc.Center).RotatedBy(MathHelper.ToRadians(-Main.player[npc.target].velocity.X * 3));
-                                }
-                                if (Main.player[npc.target].velocity.X < 0)
-                                {
-                                    Prediction = (Main.player[npc.target].Center - npc.Center).RotatedBy(MathHelper.ToRadians(-Main.player[npc.target].velocity.X * 3));
-                                }
-                            }
-                            Projectile.NewProjectile(npc.Center, Prediction, ModContent.ProjectileType<LavaBlob>(), 30, 0);
-                        }
-                        if(PhaseChange > 1199)
-                        {
-                            
-                            BlazingRadious -= 8.5f;
-                        }
-                        if(PhaseChange == 1300)
-                        {
-                            PhaseChange = 0;
-                        }
-                    }
                     for (int i = 0; i < 360; i++)
                     {
 
                         Dust dust;
-                        
+
                         // You need to set position depending on what you are doing. You may need to subtract width/2 and height/2 as well to center the spawn rectangle.
                         Vector2 position = npc.Center + new Vector2(BlazingRadious + BlazingRadiusOffset, 0).RotatedBy(MathHelper.ToDegrees(i));
                         int r = Main.rand.Next(3);
-                        if(r == 2)
+                        if (r == 2)
                         {
-                            dust = Main.dust[Terraria.Dust.NewDust(position, 0, 0, 6, 0 ,0, 0, new Color(255, 255, 255), 1f)];
+                            dust = Main.dust[Terraria.Dust.NewDust(position, 0, 0, 6, 0, 0, 0, new Color(255, 255, 255), 1f)];
                             dust.noGravity = true;
                         }
-                        
 
+
+                    }
+                    if (!Phase2)
+                    {
+                        
+                        PhaseChange++;
+                        if (PhaseChange > 275 && Enter)
+                        {
+                            Enter = false;
+                            PhaseChange = 0;
+                            npc.defense = 15;
+                        }
+                        if (Enter)
+                        {
+                            npc.defense = 75;
+                            BlazingRadious -= 5;
+                        }
+
+                        if (!Enter)
+                        {
+                            if (PhaseChange < 300)
+                            {
+                                BlazingRadious = 125;
+                            }
+                            if (PhaseChange > 300 && PhaseChange < 351)
+                            {
+                                BlazingRadious += 17.5f;
+                            }
+                            if (PhaseChange == 351)
+                            {
+                                Projectile.NewProjectile(npc.Center, npc.velocity, ModContent.ProjectileType<MoltenDeathray>(), 40, 1);
+
+                            }
+                            if (PhaseChange == 471)
+                            {
+                                for (int i = 0; i < 30; i++)
+                                {
+                                    if (npc.velocity.X > 0)
+                                    {
+                                        Projectile.NewProjectile(npc.Center.X + i * 75, npc.Center.Y, 0f, 4f, ModContent.ProjectileType<WoFshard>(), 30, 1);
+                                        Projectile.NewProjectile(npc.Center.X + i * 75, npc.Center.Y, 0f, -4f, ModContent.ProjectileType<WoFshard>(), 30, 1);
+                                    }
+                                    if (npc.velocity.X < 0)
+                                    {
+                                        Projectile.NewProjectile(npc.Center.X - i * 75, npc.Center.Y, 0f, 4f, ModContent.ProjectileType<WoFshard>(), 30, 1);
+                                        Projectile.NewProjectile(npc.Center.X - i * 75, npc.Center.Y, 0f, -4f, ModContent.ProjectileType<WoFshard>(), 30, 1);
+                                    }
+                                }
+                            }
+                            if (PhaseChange > 350 && PhaseChange < 700)
+                            {
+                                if (npc.velocity.X > 0)
+                                {
+                                    npc.rotation = npc.velocity.ToRotation();
+                                }
+                                else
+                                {
+                                    npc.rotation = npc.velocity.RotatedBy(MathHelper.PiOver2 * 2).ToRotation();
+                                }
+                            }
+                            if (PhaseChange > 700 && PhaseChange < 751)
+                            {
+                                BlazingRadious += 10;
+                            }
+                            if (PhaseChange == 751)
+                            {
+                                Main.PlaySound(29, (int)npc.Center.X, (int)npc.Center.Y, 105);
+                            }
+                            if (PhaseChange == 800)
+                            {
+                                Main.PlaySound(15, (int)npc.Center.X, (int)npc.Center.Y, 0);
+                                if (npc.velocity.X > 0)
+                                {
+                                    npc.velocity.X = 35;
+                                }
+                                if (npc.velocity.X < 0)
+                                {
+                                    npc.velocity.X = -35;
+                                }
+                            }
+                            if (PhaseChange > 800 && PhaseChange < 900)
+                            {
+                                if (PhaseChange % 10 == 0 && npc.life < npc.lifeMax / 3 && npc.velocity.X > 0)
+                                {
+                                    Main.PlaySound(SoundID.Item33, (int)npc.Center.X, (int)npc.Center.Y);
+                                    Vector2 a = new Vector2(0, 5).RotatedBy(MathHelper.ToRadians(PhaseChange - 900 * 2 + 130)) * 3;
+                                    Projectile.NewProjectile(npc.Center, a, ModContent.ProjectileType<BasaltLaser>(), 30, 1);
+                                }
+                                if (PhaseChange % 10 == 0 && npc.life < npc.lifeMax / 3 && npc.velocity.X < 0)
+                                {
+                                    Main.PlaySound(SoundID.Item33, (int)npc.Center.X, (int)npc.Center.Y);
+                                    Vector2 a = new Vector2(0, 5).RotatedBy(MathHelper.ToRadians(PhaseChange - 900 * 2 - 50)) * 3;
+                                    Projectile.NewProjectile(npc.Center, a, ModContent.ProjectileType<BasaltLaser>(), 30, 1);
+                                }
+                                if (npc.velocity.X > 0)
+                                {
+                                    npc.velocity.X = 35 - ((PhaseChange - 800) * 0.33f);
+                                }
+                                if (npc.velocity.X < 0)
+                                {
+                                    npc.velocity.X = -35 + ((PhaseChange - 800) * 0.33f);
+                                }
+                            }
+                            if (PhaseChange > 900 && PhaseChange < 951)
+                            {
+                                BlazingRadious -= 10;
+                            }
+                            if (PhaseChange == 951 || PhaseChange == 1000 || PhaseChange == 1050 || PhaseChange == 1100 || PhaseChange == 1150)
+                            {
+
+                                if (npc.velocity.X > 0)
+                                {
+                                    if (Main.player[npc.target].velocity.X > 0)
+                                    {
+                                        Prediction = (Main.player[npc.target].Center - npc.Center).RotatedBy(MathHelper.ToRadians(-Main.player[npc.target].velocity.X + Main.player[npc.target].velocity.Y));
+                                    }
+                                    if (Main.player[npc.target].velocity.X < 0)
+                                    {
+                                        Prediction = (Main.player[npc.target].Center - npc.Center).RotatedBy(MathHelper.ToRadians(-Main.player[npc.target].velocity.X * 3 + Main.player[npc.target].velocity.Y));
+                                    }
+                                }
+                                if (npc.velocity.X < 0)
+                                {
+                                    if (Main.player[npc.target].velocity.X > 0)
+                                    {
+                                        Prediction = (Main.player[npc.target].Center - npc.Center).RotatedBy(MathHelper.ToRadians(-Main.player[npc.target].velocity.X * 3));
+                                    }
+                                    if (Main.player[npc.target].velocity.X < 0)
+                                    {
+                                        Prediction = (Main.player[npc.target].Center - npc.Center).RotatedBy(MathHelper.ToRadians(-Main.player[npc.target].velocity.X * 3));
+                                    }
+                                }
+                                Projectile.NewProjectile(npc.Center, Prediction, ModContent.ProjectileType<LavaBlob>(), 30, 0);
+                            }
+                            if (PhaseChange > 1199)
+                            {
+
+                                BlazingRadious -= 8.5f;
+                            }
+                            if (PhaseChange == 1300)
+                            {
+                                PhaseChange = 0;
+                            }
+                        }
+                        
+                    }
+                    else
+                    {
+                        PhaseChange++;
+                        
+                        if(PhaseChange > 400)
+                        {
+                            PhaseChange = 0;
+                        }
+                        if (!NPC.AnyNPCs(ModContent.NPCType<BasaltBarricade>()))
+                        {
+                            
+                        }
+                        if (Main.npc[MinionIdentity].life > Main.npc[MinionIdentity].lifeMax / 4f)
+                        {
+                            if (BlazingRadious < 1400)
+                            {
+                                BlazingRadious += 5;
+                            }
+                            if (BlazingRadious < 1500)
+                            {
+                                BlazingRadious++;
+                            }
+                            if (BlazingRadious > 1500)
+                            {
+                                BlazingRadious--;
+                            }
+                        }
+                        if(Main.npc[MinionIdentity].life < Main.npc[MinionIdentity].lifeMax / 1.5f)
+                        {
+                            if (PhaseChange > 300 && PhaseChange < 400)
+                            {
+                                if (PhaseChange % 10 == 0 && npc.velocity.X < 0)
+                                {
+                                    Main.PlaySound(SoundID.Item33, (int)npc.Center.X, (int)npc.Center.Y);
+                                    Vector2 a = new Vector2(0, 5).RotatedBy(MathHelper.ToRadians(PhaseChange - 900 * 2 + 130)) * 3;
+                                    Projectile.NewProjectile(npc.Center, a, ModContent.ProjectileType<BasaltLaser>(), 30, 1);
+                                }
+                                if (PhaseChange % 10 == 0 && npc.velocity.X > 0)
+                                {
+                                    Main.PlaySound(SoundID.Item33, (int)npc.Center.X, (int)npc.Center.Y);
+                                    Vector2 a = new Vector2(0, 5).RotatedBy(MathHelper.ToRadians(PhaseChange - 900 * 2 - 50)) * 3;
+                                    Projectile.NewProjectile(npc.Center, a, ModContent.ProjectileType<BasaltLaser>(), 30, 1);
+                                }
+                            }
+                        }
+                        if (Main.npc[MinionIdentity].life < Main.npc[MinionIdentity].lifeMax / 4f)
+                        {
+                            if(BlazingRadious > 0)
+                            {
+                                BlazingRadious -= 0.8f;
+                            }
+                        }
+                        if (Main.npc[MinionIdentity].active == false)
+                        {
+                            npc.StrikeNPC(69420, 0, 0);
+                        }
                     }
                 }
                 // Wall of Flesh stuff despawns
@@ -356,7 +401,7 @@ namespace Glorymod
                 // Hungry Despawn
                 if(Mworld.Menace && npc.type == NPCID.TheHungry) { npc.active = false; }
 
-
+                
                 if (npc.type == ModContent.NPCType<EoW>())
                 {
                 }
@@ -378,18 +423,27 @@ namespace Glorymod
             }
             
         }
-        
         public override bool CheckDead(NPC npc)
         {
-            
-            return true;
+            if(npc.type == NPCID.WallofFlesh && !Phase2)
+            {
+                MinionIdentity = NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<BasaltBarricade>());
+                Phase2 = true;
+                PhaseChange = 0;
+                npc.alpha = 255;
+                npc.damage = 0;
+                npc.dontTakeDamage = true;
+                npc.life = 100;
+                return false;
+            }
+            else return true;
         }
         
 
     }
 
 
-
+    
     public class BasaltLaser : ModProjectile
     {
         public override void SetDefaults()
