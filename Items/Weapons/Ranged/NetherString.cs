@@ -14,7 +14,7 @@ namespace Glorymod.Items.Weapons.Ranged
         public override void SetStaticDefaults()
         {
             DisplayName.SetDefault("Nether String");
-            Tooltip.SetDefault("Fires 2 Arrows and 2 Lasers\nGlorious Drop");
+            Tooltip.SetDefault("Fires 2 Arrows and 2 Lasers\nYou are not supposed to have this\nGlorious Drop");
         }
         public override void SetDefaults()
         {

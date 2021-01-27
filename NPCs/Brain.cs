@@ -135,6 +135,7 @@ namespace Glorymod.NPCs
             Vector2 a = new Vector2(npc.Center.X + Main.rand.Next(60) - Main.rand.Next(60), npc.Center.Y + Main.rand.Next(20) - Main.rand.Next(20));
             Vector2 b = new Vector2(Main.rand.Next(7), Main.rand.Next(7));
             Gore.NewGoreDirect(a, b, mod.GetGoreSlot("Gores/BoCgore2"), 1f);
+            NPC.downedBoss2 = true;
             return true;
         }
         public override void AI()

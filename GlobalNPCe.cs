@@ -9,6 +9,7 @@ using System.Linq;
 using Glorymod.Items.Weapons.Melee;
 using Glorymod.Items.Accessories.Hm;
 using System.Collections.Generic;
+using Glorymod.Items.Materials;
 
 namespace Glorymod
 {
@@ -20,6 +21,7 @@ namespace Glorymod
         public override bool InstancePerEntity => true;
         public float BlazingRadious = 1500;
         bool Enter = true;
+        public bool DarkMatterEligible = true;
         public float PhaseChange;
         Vector2 Prediction;
         public bool LaserAttached = false;
@@ -42,6 +44,33 @@ namespace Glorymod
                     Item.NewItem(npc.Center, ModContent.ItemType<Gungnir>());
                 }
                 Item.NewItem(npc.Center, ModContent.ItemType<TrophyOfMenace>());
+            }
+            if(DarkMatterEligible)
+            {
+                if(npc.type == ModContent.NPCType<NeonTyrant>())
+                {
+                    Item.NewItem(npc.Center, ModContent.ItemType<DarkMatter>());
+                }
+                if (npc.type == NPCID.EyeofCthulhu)
+                {
+                    Item.NewItem(npc.Center, ModContent.ItemType<DarkMatter>());
+                }
+                if (npc.type == ModContent.NPCType<Brain>() || npc.type == ModContent.NPCType<EoW>())
+                {
+                    Item.NewItem(npc.Center, ModContent.ItemType<DarkMatter>(), 2);
+                }
+                if (npc.type == NPCID.QueenBee)
+                {
+                    Item.NewItem(npc.Center, ModContent.ItemType<DarkMatter>(), 1);
+                }
+                if (npc.type == NPCID.SkeletronHead)
+                {
+                    Item.NewItem(npc.Center, ModContent.ItemType<DarkMatter>(), 2);
+                }
+                if (npc.type == NPCID.WallofFlesh)
+                {
+                    Item.NewItem(npc.Center, ModContent.ItemType<DarkMatter>(), 5);
+                }
             }
         }
         public override void ModifyHitByProjectile(NPC npc, Projectile projectile, ref int damage, ref float knockback, ref bool crit, ref int hitDirection)
@@ -113,7 +142,16 @@ namespace Glorymod
             
             if (npc.active)
             {
-                
+                if(npc.boss)
+                {
+                    for(int i = 0; i < Main.player.Count(); i++)
+                    {
+                        if(Main.player[i].statLife < Main.player[i].statLifeMax2)
+                        {
+                            DarkMatterEligible = false;
+                        }
+                    }
+                }
 
 
                 #region Special Effects
@@ -125,6 +163,16 @@ namespace Glorymod
                     if (p.active && p.GetModPlayer<MPlayer>().isWearingVoltaicCanister && a < 600 && npc.CanBeChasedBy())
                     {
                         npc.AddBuff(ModContent.BuffType<Voltaic>(), 2, false);
+                        break;
+                    }
+                }
+                // Plasma canister debuff giver
+                for (int i = 0; i < Main.maxPlayers; i++)
+                {
+                    Player p = Main.player[i];
+                    if (p.active && p.GetModPlayer<MPlayer>().isWearingPlasmaCanister && npc.CanBeChasedBy())
+                    {
+                        npc.AddBuff(ModContent.BuffType<PlasmaVoltaic>(), 2, false);
                         break;
                     }
                 }

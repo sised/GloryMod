@@ -21,7 +21,12 @@ namespace Glorymod.NPCs
 		{
 			target.AddBuff(ModContent.BuffType<Crystallizing>(), 300);
 		}
-		public override void NPCLoot()
+        public override bool CheckDead()
+        {
+			NPC.downedBoss2 = true;
+			return true;
+        }
+        public override void NPCLoot()
 		{
 			Item.NewItem(npc.Center, ItemID.EaterOfWorldsBossBag);
 			Item.NewItem(npc.Center, ModContent.ItemType<PellucidCore>());

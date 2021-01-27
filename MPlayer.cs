@@ -23,6 +23,7 @@ namespace Glorymod
         public bool isWearingSandstoneMedallion = false;
         public bool isWearingFrigidShard = false;
         public bool isWearingVoltaicCanister = false;
+        public bool isWearingPlasmaCanister = false;
         public bool Burden = false;
         bool HasFrigidflakeSpawned = false;
         bool HealingDisabled = false;
@@ -81,6 +82,7 @@ namespace Glorymod
             isWearingNeonCanister = false;
             isWearingFrigidShard = false;
             isWearingVoltaicCanister = false;
+            isWearingPlasmaCanister = false;
             Burden = false;
             
         }

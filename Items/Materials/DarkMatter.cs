@@ -7,12 +7,12 @@ using Terraria.DataStructures;
 
 namespace Glorymod.Items.Materials
 {
-    public class EssenceOfGlory : ModItem
+    public class DarkMatter : ModItem
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Essence of Glory");
-            Tooltip.SetDefault("Contains a small amount of glory earned upon battle, \nUsed to crat most of Glorymod's items, stacks up to 9999.");
+            DisplayName.SetDefault("Dark Matter");
+            Tooltip.SetDefault("Not scientifically accurate at all\nUsed to upgrade boss drops\nObtained if a boss is killed while all players had 100% hp for the whole fight\nQuantity depends on the boss");
             Main.RegisterItemAnimation(item.type, new DrawAnimationVertical(5, 4));
             ItemID.Sets.AnimatesAsSoul[item.type] = true;
             ItemID.Sets.ItemIconPulse[item.type] = true;

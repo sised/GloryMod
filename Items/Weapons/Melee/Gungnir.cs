@@ -30,7 +30,7 @@ namespace Glorymod.Items.Weapons.Melee
             item.useAnimation = 20;
             item.useStyle = 1;
             item.autoReuse = true;
-            item.rare = 8;
+            item.rare = -12;
             item.UseSound = SoundID.Item1;
             item.useTurn = true;
             item.melee = true;

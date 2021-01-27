@@ -2,6 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Glorymod.Projectiles
 {
@@ -28,6 +29,7 @@ namespace Glorymod.Projectiles
         }
         public override void AI()
         {
+
             if (++projectile.frameCounter >= 5)
             {
                 projectile.frameCounter = 0;
@@ -36,7 +38,12 @@ namespace Glorymod.Projectiles
                     projectile.frame = 0;
                 }
             }
+            
+        }
+        public override bool PreDraw(SpriteBatch spriteBatch, Color lightColor)
+        {
             projectile.rotation = projectile.velocity.ToRotation() + MathHelper.ToRadians(90);
+            return true;
         }
         public override bool PreKill(int timeLeft)
         {
