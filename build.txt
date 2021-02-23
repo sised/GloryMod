@@ -1,4 +1,4 @@
 author = sised
-version = 2.2.2
+version = 2.2.3
 displayName = Glory Mod
 homepage = https://discord.gg/VmJgaJFN3z

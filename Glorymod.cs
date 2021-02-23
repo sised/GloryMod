@@ -29,6 +29,7 @@ namespace Glorymod
                 GetSoundSlot(SoundType.Music, "Sounds/Music/ClearAsGlass"),
                 GetSoundSlot(SoundType.Music, "Sounds/Music/FromTheCore"),
                 GetSoundSlot(SoundType.Music, "Sounds/Music/Existential"),
+                GetSoundSlot(SoundType.Music, "Sounds/Music/BloodRedTransparent"),
             };
             foreach (var slot in slots) // Other mods crashing during loading can leave Main.music in a weird state.
             {
@@ -62,14 +63,22 @@ namespace Glorymod
 
                     // Updating a filter
                     Filters.Scene["WolferShader"].GetShader();
-
-
                 }
                 else
                 {
                     Filters.Scene["WolferShader"].Deactivate();
                 }
+                if (NPC.AnyNPCs(ModContent.NPCType<Annih1>()) && !Main.gameMenu)
+                {
+                    Filters.Scene.Activate("AnnihS");
 
+                    // Updating a filter
+                    Filters.Scene["AnnihS"].GetShader();
+                }
+                else
+                {
+                    Filters.Scene["AnnihS"].Deactivate();
+                }
 
                 if (NPC.AnyNPCs(ModContent.NPCType<Corruption>()) && !Main.gameMenu)
                 {
@@ -77,8 +86,6 @@ namespace Glorymod
 
                     // Updating a filter
                     Filters.Scene["CorruptionShader"].GetShader();
-
-
                 }
                 else
                 {
@@ -112,6 +119,11 @@ namespace Glorymod
             if (NPC.AnyNPCs(ModContent.NPCType<EoW1>()) && !Main.gameMenu)
             {
                 music = GetSoundSlot(SoundType.Music, "Sounds/Music/ClearAsGlass");
+                priority = MusicPriority.BossMedium;
+            }
+            if (NPC.AnyNPCs(ModContent.NPCType<Annih1>()) && !Main.gameMenu)
+            {
+                music = GetSoundSlot(SoundType.Music, "Sounds/Music/BloodRedTransparent");
                 priority = MusicPriority.BossMedium;
             }
             if (Mworld.Menace && NPC.AnyNPCs(NPCID.WallofFlesh) && !Main.gameMenu)
@@ -177,9 +189,12 @@ namespace Glorymod
                 // You'll have to do this regardless of what kind of shader it is,
                 // and you'll have to do it for every shader file.
                 // This example assumes you have both armour and screen shaders.
-
+                Ref<Effect> Shockwave = new Ref<Effect>(GetEffect("Effects/Shockwave")); // The path to the compiled shader file.
+                Filters.Scene["Shockwave"] = new Filter(new ScreenShaderData(Shockwave, "Shockwave"), EffectPriority.VeryHigh);
+                Filters.Scene["Shockwave"].Load();
                 Ref<Effect> SWolferShader = new Ref<Effect>(GetEffect("Effects/WolferShader"));
                 Ref<Effect> SCorruptionShader = new Ref<Effect>(GetEffect("Effects/CorruptionShader"));
+                Ref<Effect> SAnnihShader = new Ref<Effect>(GetEffect("Effects/AnnihS"));
                 // To add a dye, simply add this for every dye you want to add.
                 // "PassName" should correspond to the name of your pass within the *technique*,
                 // so if you get an error here, make sure you've spelled it right across your effect file.
@@ -197,6 +212,7 @@ namespace Glorymod
                 // EffectPriority should be set to whatever you think is reasonable.   
 
                 Filters.Scene["WolferShader"] = new Filter(new ScreenShaderData(SWolferShader, "PixelShaderFunction"), EffectPriority.Medium);
+                Filters.Scene["AnnihS"] = new Filter(new ScreenShaderData(SAnnihShader, "PixelShaderFunction"), EffectPriority.Medium);
                 Filters.Scene["CorruptionShader"] = new Filter(new ScreenShaderData(SCorruptionShader, "PixelShaderFunction"), EffectPriority.High);
             }
 

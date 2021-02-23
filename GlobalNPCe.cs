@@ -37,6 +37,10 @@ namespace Glorymod
         int Ypos = -300;
         public override void NPCLoot(NPC npc)
         {
+            if(npc.CanBeChasedBy() && Main.rand.Next(3) == 2)
+            {
+                Item.NewItem(npc.Center, ModContent.ItemType<EssenceOfGlory>());
+            }
             if(npc.type == NPCID.WallofFlesh)
             {
                 if (Main.rand.Next(200) == 5)
@@ -204,6 +208,20 @@ namespace Glorymod
                                 Main.npc[i].active = false;
                             }
                         }
+                    }
+                    //annihilator spawn
+                    if (npc.type == NPCID.TheDestroyer)
+                    {
+                        NPC.NewNPC((int)npc.Center.X, (int)npc.Center.Y, ModContent.NPCType<Annih1>());
+                        npc.active = false;
+                    }
+                    if (npc.type == NPCID.TheDestroyerBody)
+                    {
+                        npc.active = false;
+                    }
+                    if (npc.type == NPCID.TheDestroyerTail)
+                    {
+                        npc.active = false;
                     }
                     //creepers despawn when altintellect spawns
                     if (npc.type == NPCID.Creeper)
