@@ -24,7 +24,7 @@ namespace Glorymod.Buffs
             idk++;
             Dust dust;
             dust = Main.dust[Terraria.Dust.NewDust(npc.position, npc.width, npc.height, 20, 0f, 0f, 0, new Color(0, 255, 0), 0.5f)];
-            if (npc.life > 1 && idk % 5 == 0)
+            if (npc.life > 1 && idk % 5 == 0 && !npc.dontTakeDamage)
             {
                 npc.life--;
             }

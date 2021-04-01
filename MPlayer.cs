@@ -27,6 +27,7 @@ namespace Glorymod
         public bool Burden = false;
         bool HasFrigidflakeSpawned = false;
         bool HealingDisabled = false;
+        public int AnnihGuideNum = 1;
         int spawnX;
         int spawnY;
         

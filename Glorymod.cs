@@ -7,16 +7,12 @@ using Glorymod.NPCs;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Graphics.Effects;
 using Terraria.Graphics.Shaders;
-using Terraria.GameContent.Dyes;
-using Terraria.GameContent.UI;
-using Terraria.ModLoader.Config;
-
+using Microsoft.Xna.Framework;
 namespace Glorymod
 {
 	class Glorymod : Mod
 	{
-        
-		public Glorymod()
+        public Glorymod()
 		{
 		}
         public override void Close()
@@ -30,6 +26,7 @@ namespace Glorymod
                 GetSoundSlot(SoundType.Music, "Sounds/Music/FromTheCore"),
                 GetSoundSlot(SoundType.Music, "Sounds/Music/Existential"),
                 GetSoundSlot(SoundType.Music, "Sounds/Music/BloodRedTransparent"),
+                GetSoundSlot(SoundType.Music, "Sounds/Music/LegendaryOverdrive"),
             };
             foreach (var slot in slots) // Other mods crashing during loading can leave Main.music in a weird state.
             {
@@ -79,7 +76,17 @@ namespace Glorymod
                 {
                     Filters.Scene["AnnihS"].Deactivate();
                 }
+                if (NPC.AnyNPCs(ModContent.NPCType<AnnihO1>()) && !Main.gameMenu)
+                {
+                    Filters.Scene.Activate("AnnihOS");
 
+                    // Updating a filter
+                    Filters.Scene["AnnihOS"].GetShader();
+                }
+                else
+                {
+                    Filters.Scene["AnnihOS"].Deactivate();
+                }
                 if (NPC.AnyNPCs(ModContent.NPCType<Corruption>()) && !Main.gameMenu)
                 {
                     Filters.Scene.Activate("CorruptionShader");
@@ -124,6 +131,11 @@ namespace Glorymod
             if (NPC.AnyNPCs(ModContent.NPCType<Annih1>()) && !Main.gameMenu)
             {
                 music = GetSoundSlot(SoundType.Music, "Sounds/Music/BloodRedTransparent");
+                priority = MusicPriority.BossMedium;
+            }
+            if (NPC.AnyNPCs(ModContent.NPCType<overdriveBirther>()) && !Main.gameMenu || (NPC.AnyNPCs(ModContent.NPCType<AnnihO1>()) && !Main.gameMenu))
+            {
+                music = GetSoundSlot(SoundType.Music, "Sounds/Music/LegendaryOverdrive");
                 priority = MusicPriority.BossMedium;
             }
             if (Mworld.Menace && NPC.AnyNPCs(NPCID.WallofFlesh) && !Main.gameMenu)
@@ -195,6 +207,7 @@ namespace Glorymod
                 Ref<Effect> SWolferShader = new Ref<Effect>(GetEffect("Effects/WolferShader"));
                 Ref<Effect> SCorruptionShader = new Ref<Effect>(GetEffect("Effects/CorruptionShader"));
                 Ref<Effect> SAnnihShader = new Ref<Effect>(GetEffect("Effects/AnnihS"));
+                Ref<Effect> OSAnnihShader = new Ref<Effect>(GetEffect("Effects/AnnihOS"));
                 // To add a dye, simply add this for every dye you want to add.
                 // "PassName" should correspond to the name of your pass within the *technique*,
                 // so if you get an error here, make sure you've spelled it right across your effect file.
@@ -213,6 +226,7 @@ namespace Glorymod
 
                 Filters.Scene["WolferShader"] = new Filter(new ScreenShaderData(SWolferShader, "PixelShaderFunction"), EffectPriority.Medium);
                 Filters.Scene["AnnihS"] = new Filter(new ScreenShaderData(SAnnihShader, "PixelShaderFunction"), EffectPriority.Medium);
+                Filters.Scene["AnnihOS"] = new Filter(new ScreenShaderData(OSAnnihShader, "PixelShaderFunction"), EffectPriority.Medium);
                 Filters.Scene["CorruptionShader"] = new Filter(new ScreenShaderData(SCorruptionShader, "PixelShaderFunction"), EffectPriority.High);
             }
 
